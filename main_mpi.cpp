@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-
+#include <mpi.h>
 using namespace std;
 
 const int seed = 2019;
@@ -55,7 +55,7 @@ void printGrid(int iteration) {
 }
 
 
-int main() {
+int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     
     int rank;
