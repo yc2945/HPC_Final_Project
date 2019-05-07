@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
     
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-    if (world_rank == 0) {
+    if (rank == 0) {
         srand(seed);
         grid = new int[gridSize * gridSize];
         for (int i = 0; i < gridSize; i++) {
