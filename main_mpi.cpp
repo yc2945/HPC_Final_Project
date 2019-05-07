@@ -76,6 +76,7 @@ int main(int argc, char** argv) {
         }
 
         delete[] grid;
+    }
     MPI_Finalize();
     return 0;
 }
