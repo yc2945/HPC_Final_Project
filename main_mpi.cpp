@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
     // master node gather subcubes
 
     if(rank == 0){
-        printf('start filling')
+        printf("start filling");
         fillcube(rank, rp, piece); 
     }
     if (rank != 0) {
