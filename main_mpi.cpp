@@ -129,14 +129,14 @@ int main(int argc, char** argv) {
     else{
         
         printGrid(iterationCount, piece, 0);
-        fillcube(rank, rp, piece);
+        //fillcube(rank, rp, piece);
         printf("first cube filled");
         for (int j = 1; j < world_size; j++){
             delete[] grid;
             grid = new int[piece * piece];
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
             printGrid(iterationCount, piece, j);
-            fillcube(rank, rp, piece);
+            //fillcube(rank, rp, piece);
         printAllGrid(iterationCount);
         }
         
