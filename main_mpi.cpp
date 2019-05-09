@@ -86,8 +86,6 @@ int main(int argc, char** argv) {
     }
         
         
-        
-    }
     printGrid(iterationCount - 1, piece, rank);
 
     delete[] grid;
