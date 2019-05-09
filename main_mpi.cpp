@@ -133,7 +133,7 @@ int main(int argc, char** argv) {
             grid = new int[piece * piece];
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
             printGrid(iterationCount, piece, j);
-            fillcube(grid, rank, rp, piece);
+            fillcube(rank, rp, piece);
         }
         printAllGrid(iterationCount);
     }
