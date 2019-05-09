@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
         
         
     }
-    printGrid(i, piece);
+    printGrid(iterationCount - 1, piece);
 
     delete[] grid;
     
