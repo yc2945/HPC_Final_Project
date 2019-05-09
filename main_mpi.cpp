@@ -57,7 +57,7 @@ void printGrid(int *grid, int iteration, int piece, int rank) {
 }
 
 void printAllGrid(int *allgrid,int iteration) {
-    printf("print allgrid");
+    printf("print allgrid \n");
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
             printf("%d ", allgrid[i * gridSize + j]);
@@ -135,17 +135,17 @@ int main(int argc, char** argv) {
 
         // //fillcube(rank, rp, piece);
         // printf("first cube filled");
-        // for (int j = 1; j < world_size; j++){
-        //     free(grid);
-        //     grid = (int*) malloc(piece * piece * sizeof(int));
-        //     MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
-        //     printGrid(grid, iterationCount, piece, j);
-        //     //fillcube(rank, rp, piece);
+        for (int j = 1; j < world_size; j++){
+            free(grid);
+            grid = (int*) malloc(piece * piece * sizeof(int));
+            MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
+            printGrid(grid, iterationCount, piece, j);
+            //fillcube(rank, rp, piece);
         printAllGrid(allgrid, iterationCount);
-        // free(allgrid);
-        // }
+        free(allgrid);
+        }
         
-    }
+    }   
   
     MPI_Barrier(comm);
     delete[] grid;
