@@ -68,13 +68,14 @@ void printAllGrid(int iteration) {
     printf("\n");
 }
 
-void fillcube(int* subcube, int rank, int rp, int piece){
+void fillcube(int rank, int rp, int piece){
     // e.g. rank = 4,rp = 3, piece = 2, then row = 1, col_start = 2
     int row_start = rank / rp;
     int col_start = (rank % rp) * piece;
+    printf("start filling");
     for (int i = 0; i < piece ; i++) {
         for (int j = 0; j < piece; j++) {
-            allgrid[(row_start + i) * gridSize + col_start + j] = subcube[i * piece + j];
+            allgrid[(row_start + i) * gridSize + col_start + j] = grid[i * piece + j];
         }
     }
 }
@@ -125,7 +126,7 @@ int main(int argc, char** argv) {
     else{
         int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
         printGrid(iterationCount, piece, 0);
-        fillcube(grid, rank, rp, piece);
+        fillcube(rank, rp, piece);
         printf("first cube filled");
         for (int j = 1; j < world_size; j++){
             delete[] grid;
