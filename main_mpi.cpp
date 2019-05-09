@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
         }
         runTick(piece);
     }
-
+    MPI_Barrier()
     // master node gather subcubes 
     if (rank != 0) {
         MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
     else{
         int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
         printGrid(iterationCount, piece, 0);
-        //fillcube(rank, rp, piece);
+        fillcube(rank, rp, piece);
         printf("first cube filled");
         for (int j = 1; j < world_size; j++){
             delete[] grid;
@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
         printAllGrid(iterationCount);
     }
   
-
+    MPI_Barrier()
     delete[] grid;
     if (rank == 0)
         delete[] allgrid;
