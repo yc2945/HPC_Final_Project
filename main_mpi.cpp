@@ -43,7 +43,8 @@ void runTick(int piece) {
     grid = newGrid;
 }
 
-void printGrid(int iteration, int piece) {
+void printGrid(int iteration, int piece, int rank) {
+    printf("Process %d: \n", rank);
     printf("Current Iteration: %d \n", iteration);
     for (int i = 0; i < piece; i++) {
         for (int j = 0; j < piece; j++) {
@@ -77,9 +78,9 @@ int main(int argc, char** argv) {
 
 
     for (int i = 0; i < iterationCount; i++) {
-        printGrid(i, piece);
+        printGrid(i, piece, rank);
         runTick(piece);
-        printf("Process %d: \n", rank);
+        
         
         
     }
