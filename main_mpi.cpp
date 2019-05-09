@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
         }
         runTick(piece);
     }
-    MPI_Barrier()
+    MPI_Barrier(comm);
     // master node gather subcubes 
     if (rank != 0) {
         MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
         printAllGrid(iterationCount);
     }
   
-    MPI_Barrier()
+    MPI_Barrier(comm);
     delete[] grid;
     if (rank == 0)
         delete[] allgrid;
