@@ -10,7 +10,7 @@ const int iterationCount = 3;
 const int gridSize = 8;
 
 int *grid;
-
+int* allgrid;
 // We define 0 as dead, 1 as alive
 
 void runTick(int piece) {
@@ -57,7 +57,7 @@ void printGrid(int iteration, int piece, int rank) {
     printf("\n");
 }
 
-void printAllGrid(int* allgrid, int iteration) {
+void printAllGrid(int iteration) {
     printf("Current Iteration: %d \n", iteration);
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
@@ -68,7 +68,7 @@ void printAllGrid(int* allgrid, int iteration) {
     printf("\n");
 }
 
-void fillcube(int* subcube, int* allgrid, int rank, int rp, int piece){
+void fillcube(int* subcube, int rank, int rp, int piece){
     // e.g. rank = 4,rp = 3, piece = 2, then row = 1, col_start = 2
     int row_start = rank / rp;
     int col_start = (rank % rp) * piece;
@@ -125,15 +125,15 @@ int main(int argc, char** argv) {
     else{
         int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
         printGrid(iterationCount - 1, piece, 0);
-        fillcube(grid, allgrid, rank, rp, piece);
+        fillcube(grid, rank, rp, piece);
         for (int j = 1; j < world_size; j++){
             delete[] grid;
             grid = new int[piece * piece];
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
             printGrid(iterationCount - 1, piece, j);
-            fillcube(grid, allgrid, rank, rp, piece);
+            fillcube(grid, rank, rp, piece);
         }
-        printAllGrid(allgrid, iterationCount - 1);
+        printAllGrid(iterationCount - 1);
     }
   
 
