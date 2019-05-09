@@ -124,16 +124,17 @@ int main(int argc, char** argv) {
     }
     else{
         int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
-        printGrid(iterationCount - 1, piece, 0);
+        printGrid(iterationCount, piece, 0);
         fillcube(grid, rank, rp, piece);
+        print('first cube filled')
         for (int j = 1; j < world_size; j++){
             delete[] grid;
             grid = new int[piece * piece];
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
-            printGrid(iterationCount - 1, piece, j);
+            printGrid(iterationCount, piece, j);
             fillcube(grid, rank, rp, piece);
         }
-        printAllGrid(iterationCount - 1);
+        printAllGrid(iterationCount);
     }
   
 
