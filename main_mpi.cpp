@@ -67,17 +67,17 @@ void printAllGrid(int *allgrid,int iteration) {
     printf("\n");
 }
 
-void fillcube(int rank, int rp, int piece){
+void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
     // e.g. rank = 4,rp = 3, piece = 2, then row = 1, col_start = 2
     //printf("start fillcube function");
     int row_start = rank / rp;
     int col_start = (rank % rp) * piece;
     //printf("start filling");
-    // for (int i = 0; i < piece ; i++) {
-    //     for (int j = 0; j < piece; j++) {
-    //         allgrid[(row_start + i) * gridSize + col_start + j] = grid[i * piece + j];
-    //     }
-    // }
+    for (int i = 0; i < piece ; i++) {
+        for (int j = 0; j < piece; j++) {
+            allgrid[(row_start + i) * gridSize + col_start + j] = grid[i * piece + j];
+        }
+    }
 }
 
 int main(int argc, char** argv) {
@@ -133,7 +133,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        // //fillcube(rank, rp, piece);
+        fillcube(grid, allgrid, rank, rp, piece);
         // printf("first cube filled");
         for (int j = 1; j < world_size; j++){
             printf("j = %d \n", j);
@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
             grid = (int*) malloc(piece * piece * sizeof(int));
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
             printGrid(grid, iterationCount, piece, j);
-            //fillcube(rank, rp, piece);
+            fillcube(grid, allgrid, rank, rp, piece);
         }
         
         printAllGrid(allgrid, iterationCount);   
