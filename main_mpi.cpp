@@ -70,7 +70,7 @@ void printAllGrid(int *allgrid,int iteration) {
 void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
     // e.g. rank = 4,rp = 3, piece = 2, then row = 1, col_start = 2
     //printf("start fillcube function");
-    int row_start = (int)rank / rp;
+    int row_start = (int)(rank / rp * piece);
     printf("row_start = %d", row_start);
     int col_start = (int)(rank % rp) * piece;
     //printf("start filling");
