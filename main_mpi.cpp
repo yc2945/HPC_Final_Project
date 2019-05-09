@@ -137,8 +137,9 @@ int main(int argc, char** argv) {
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
             printGrid(iterationCount, piece, j);
             fillcube(rank, rp, piece);
+        printAllGrid(iterationCount);
         }
-        //printAllGrid(iterationCount);
+        
     }
   
     MPI_Barrier(comm);
