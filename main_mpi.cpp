@@ -7,7 +7,7 @@ using namespace std;
 
 const int seed = 2019;
 const int iterationCount = 3;
-const int gridSize = 20;
+const int gridSize = 8;
 
 int *grid;
 
@@ -57,6 +57,7 @@ void printGrid(int iteration, int piece, int rank) {
     printf("\n");
 }
 
+// void fillcube(subcube, piece)
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
@@ -66,12 +67,19 @@ int main(int argc, char** argv) {
     MPI_Comm_rank(comm, &rank);
     int world_size;
     MPI_Comm_size(comm, &world_size);
-    int piece;
-    piece = (int)sqrt(world_size);
-    if (fabs(piece - sqrt(world_size)) > 0.00001){
-        printf("Please use nodes number whose square root is an integer. ");
+    MPI_Status status;
+
+    // calculate the length of each subcube
+    
+    if (fabs((int)sqrt(world_size) - sqrt(world_size)) > 0.00001){
+        printf("Please use nodes number whose square root is an integer. \n \n");
         abort();
     }
+    int piece;
+    piece = (int)(gridSize / (int)sqrt(world_size));
+
+
+    //initiate each subcube
     srand(seed+rank);
     grid = new int[piece * piece];
     for (int i = 0; i < piece; i++) {
@@ -80,7 +88,7 @@ int main(int argc, char** argv) {
         }
     }
 
-
+    //update each subcube
     for (int i = 0; i < iterationCount; i++) {
         for (int j = 0; j < world_size; j++){
             if (rank == j)
@@ -89,6 +97,18 @@ int main(int argc, char** argv) {
         }
         runTick(piece);
     }
+
+    // master node gather subcubes 
+    // if rank != 0 {
+    //     MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
+    // }
+    // else{
+
+    //     for (int j = 0; j < world_size; j++){
+    //         MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
+    //     }
+    // }
+
 //     MPI Gather(grid, piece * piece, MPI_INT, grid, piece * piece, 0, comm);
 //     (void* sendbuff, int sendcount, MPI Datatype
 // sendtype, void* recvbuf, int recvcount, MPI Datatype
