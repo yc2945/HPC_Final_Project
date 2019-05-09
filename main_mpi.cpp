@@ -9,11 +9,10 @@ const int seed = 2019;
 const int iterationCount = 3;
 const int gridSize = 8;
 
-int *grid;
-int* allgrid;
+
 // We define 0 as dead, 1 as alive
 
-void runTick(int piece) {
+void runTick(int *grid, int piece) {
     int *newGrid = new int[piece * piece];
 
     for (int i = 0; i < piece * piece; i++) {
@@ -45,7 +44,7 @@ void runTick(int piece) {
     grid = newGrid;
 }
 
-void printGrid(int iteration, int piece, int rank) {
+void printGrid(int *grid, int iteration, int piece, int rank) {
     printf("Process %d: \n", rank);
     printf("Current Iteration: %d \n", iteration);
     for (int i = 0; i < piece; i++) {
@@ -57,7 +56,7 @@ void printGrid(int iteration, int piece, int rank) {
     printf("\n");
 }
 
-void printAllGrid(int iteration) {
+void printAllGrid(int *allgrid,int iteration) {
     printf("print allgrid");
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
@@ -103,7 +102,7 @@ int main(int argc, char** argv) {
 
     //initiate each subcube
     srand(seed+rank);
-    grid = new int[piece * piece];
+    grid = (int*) malloc(piece * piece * sizeof(int));
     for (int i = 0; i < piece; i++) {
         for (int j = 0; j < piece; j++) {
             grid[i * piece + j] = rand() % 2;
@@ -114,30 +113,29 @@ int main(int argc, char** argv) {
     for (int i = 0; i < iterationCount; i++) {
         for (int j = 0; j < world_size; j++){
             if (rank == j)
-                printGrid(i, piece, rank);
+                printGrid(grid, i, piece, rank);
             MPI_Barrier(comm);
         }
-        runTick(piece);
+        runTick(grid, piece);
     }
     MPI_Barrier(comm);
     // master node gather subcubes
 
-    int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
+    
     if (rank != 0) {
         MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
     }
     else{
-        
-        printGrid(iterationCount, piece, 0);
+        int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
         //fillcube(rank, rp, piece);
         printf("first cube filled");
         for (int j = 1; j < world_size; j++){
-            delete[] grid;
-            grid = new int[piece * piece];
+            free(grid);
+            grid = (int*) malloc(piece * piece * sizeof(int));
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
-            printGrid(iterationCount, piece, j);
+            printGrid(grid, iterationCount, piece, j);
             //fillcube(rank, rp, piece);
-        printAllGrid(iterationCount);
+        printAllGrid(allgrid, iterationCount);
         }
         
     }
