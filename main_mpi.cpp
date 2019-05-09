@@ -71,14 +71,14 @@ int main(int argc, char** argv) {
     grid = new int[piece * piece];
     for (int i = 0; i < piece; i++) {
         for (int j = 0; j < piece; j++) {
-            grid[i * gridSize + j] = rand() % 2;
+            grid[i * piece + j] = rand() % 2;
         }
     }
 
 
     for (int i = 0; i < iterationCount; i++) {
         printGrid(i, piece);
-        // runTick(piece);
+        runTick(piece);
         printf("Process %d: \n", rank);
         
         
