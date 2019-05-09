@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <mpi.h>
+#include <math.h>
+
 using namespace std;
 
 const int seed = 2019;
@@ -65,9 +67,10 @@ int main(int argc, char** argv) {
     int world_size;
     MPI_Comm_size(comm, &world_size);
     int piece;
-    // need change
-    piece = 3;
-    
+    piece = (int)sqrt(world_size);
+    if (piece - sqrt(world_size) > 0.00001)
+        printf("Please use nodes number whose square root is an integer. ")
+        abort();
     srand(seed+rank);
     grid = new int[piece * piece];
     for (int i = 0; i < piece; i++) {
@@ -85,8 +88,10 @@ int main(int argc, char** argv) {
         }
         runTick(piece);
     }
-        
-        
+    MPI Gather(grid, piece * piece, MPI_INT, grid, piece * piece, 0, comm);
+    (void* sendbuff, int sendcount, MPI Datatype
+sendtype, void* recvbuf, int recvcount, MPI Datatype
+recvtype, int root, MPI Comm communicator)    
     printGrid(iterationCount - 1, piece, rank);
 
     delete[] grid;
