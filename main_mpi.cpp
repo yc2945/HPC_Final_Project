@@ -58,7 +58,7 @@ void printGrid(int iteration, int piece, int rank) {
 }
 
 void printAllGrid(int iteration) {
-    printf("Current Iteration: %d \n", iteration);
+    printf("print allgrid");
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
             printf("%d ", allgrid[i * gridSize + j]);
