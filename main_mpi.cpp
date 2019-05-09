@@ -11,7 +11,7 @@ int *grid;
 
 // We define 0 as dead, 1 as alive
 
-void runTick(piece) {
+void runTick(int piece) {
     int *newGrid = new int[piece * piece];
 
     for (int i = 0; i < piece * piece; i++) {
@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
 
 
     for (int i = 0; i < iterationCount; i++) {
-        runTick();
+        runTick(piece);
         printf("Process %d: \n", rank);
         printGrid(i, piece);
         
