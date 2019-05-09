@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
     piece = 3;
     
     srand(seed);
-    grid = new int[gridSize * gridSize];
+    grid = new int[piece * piece];
     for (int i = 0; i < piece; i++) {
         for (int j = 0; j < piece; j++) {
             grid[i * gridSize + j] = rand() % 2;
@@ -78,6 +78,7 @@ int main(int argc, char** argv) {
 
     for (int i = 0; i < iterationCount; i++) {
         runTick();
+        printf("Process %d: \n", rank);
         printGrid(i);
         
     }
