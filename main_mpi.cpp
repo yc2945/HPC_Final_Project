@@ -127,6 +127,12 @@ int main(int argc, char** argv) {
     }
     else{
         int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+            allgrid[i * gridSize + j] = 2;
+            }
+        }
+
         //fillcube(rank, rp, piece);
         printf("first cube filled");
         for (int j = 1; j < world_size; j++){
