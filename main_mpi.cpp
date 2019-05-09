@@ -136,14 +136,13 @@ int main(int argc, char** argv) {
             printGrid(grid, iterationCount, piece, j);
             //fillcube(rank, rp, piece);
         printAllGrid(allgrid, iterationCount);
+        free(allgrid);
         }
         
     }
   
     MPI_Barrier(comm);
     delete[] grid;
-    if (rank == 0)
-        free(allgrid);
     MPI_Finalize();
     return 0;
 }
