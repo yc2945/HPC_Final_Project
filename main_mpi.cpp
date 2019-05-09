@@ -13,7 +13,7 @@ const int gridSize = 9;
 // We define 0 as dead, 1 as alive
 
 void runTick(int *grid, int piece) {
-    int *newGrid = new int[piece * piece];
+    //int *newGrid = new int[piece * piece];
 
     for (int i = 0; i < piece * piece; i++) {
         int liveCount = 0;
@@ -32,16 +32,16 @@ void runTick(int *grid, int piece) {
             }
         }
 
-        newGrid[i] = grid[i];
+        //newGrid[i] = grid[i];
         if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
-            newGrid[i] = 0;
+            grid[i] = 0;
         }
         if (grid[i] == 0 && liveCount == 3) {
-            newGrid[i] = 1;
+            grid[i] = 1;
         }
     }
 
-    grid = newGrid;
+    //grid = newGrid;
 }
 
 void printGrid(int *grid, int iteration, int piece, int rank) {
