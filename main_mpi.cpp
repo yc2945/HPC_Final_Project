@@ -59,24 +59,30 @@ int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     
     int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank == 0) {
-        srand(seed);
-        grid = new int[gridSize * gridSize];
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                grid[i * gridSize + j] = rand() % 2;
-            }
+    MPI_Comm_rank(comm, &rank);
+    int world_size;
+    MPI_Comm_size(comm, &world_size);
+    int piece;
+    // need change
+    piece = 3 
+    
+    srand(seed);
+    grid = new int[gridSize * gridSize];
+    for (int i = 0; i < piece; i++) {
+        for (int j = 0; j < piece; j++) {
+            grid[i * gridSize + j] = rand() % 2;
         }
-
-
-        for (int i = 0; i < iterationCount; i++) {
-            runTick();
-            printGrid(i);
-        }
-
-        delete[] grid;
     }
+
+
+    for (int i = 0; i < iterationCount; i++) {
+        runTick(grid);
+        printGrid(i);
+        
+    }
+
+    delete[] grid;
+    
     MPI_Finalize();
     return 0;
 }
