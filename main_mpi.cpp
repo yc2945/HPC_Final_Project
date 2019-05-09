@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
     int piece;
     piece = (int)sqrt(world_size);
     if (piece - sqrt(world_size) > 0.00001)
-        printf("Please use nodes number whose square root is an integer. ")
+        printf("Please use nodes number whose square root is an integer. ");
         abort();
     srand(seed+rank);
     grid = new int[piece * piece];
