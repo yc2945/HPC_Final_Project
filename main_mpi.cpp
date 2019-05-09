@@ -74,11 +74,11 @@ void fillcube(int rank, int rp, int piece){
     int row_start = rank / rp;
     int col_start = (rank % rp) * piece;
     printf("start filling");
-    for (int i = 0; i < piece ; i++) {
-        for (int j = 0; j < piece; j++) {
-            allgrid[(row_start + i) * gridSize + col_start + j] = grid[i * piece + j];
-        }
-    }
+    // for (int i = 0; i < piece ; i++) {
+    //     for (int j = 0; j < piece; j++) {
+    //         allgrid[(row_start + i) * gridSize + col_start + j] = grid[i * piece + j];
+    //     }
+    // }
 }
 
 int main(int argc, char** argv) {
@@ -122,8 +122,10 @@ int main(int argc, char** argv) {
     MPI_Barrier(comm);
     // master node gather subcubes
 
-    if(rank == 0)
+    if(rank == 0){
+        printf('start filling')
         fillcube(rank, rp, piece); 
+    }
     if (rank != 0) {
         MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
     }
