@@ -4,7 +4,7 @@
 using namespace std;
 
 const int seed = 2019;
-const int iterationCount = 10;
+const int iterationCount = 3;
 const int gridSize = 20;
 
 int *grid;
@@ -78,8 +78,12 @@ int main(int argc, char** argv) {
 
 
     for (int i = 0; i < iterationCount; i++) {
-        printGrid(i, piece, rank);
+        for (int j = 0; j < world_size; j++){
+            if (rank == j)
+                printGrid(i, piece, rank);
+        }
         runTick(piece);
+    }
         
         
         
