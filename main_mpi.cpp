@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
     // need change
     piece = 3;
     
-    srand(seed);
+    srand(seed+rank);
     grid = new int[piece * piece];
     for (int i = 0; i < piece; i++) {
         for (int j = 0; j < piece; j++) {
