@@ -136,6 +136,7 @@ int main(int argc, char** argv) {
         // //fillcube(rank, rp, piece);
         // printf("first cube filled");
         for (int j = 1; j < world_size; j++){
+            print("j = %d", j)
             free(grid);
             grid = (int*) malloc(piece * piece * sizeof(int));
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
