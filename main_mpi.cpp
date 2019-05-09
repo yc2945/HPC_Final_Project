@@ -142,10 +142,9 @@ int main(int argc, char** argv) {
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
             printGrid(grid, iterationCount, piece, j);
             //fillcube(rank, rp, piece);
-        printAllGrid(allgrid, iterationCount);
-        free(allgrid);
         }
-        
+        free(allgrid);
+        printAllGrid(allgrid, iterationCount);    
     }   
   
     MPI_Barrier(comm);
