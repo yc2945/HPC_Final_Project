@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
 
     for (int i = 0; i < iterationCount; i++) {
         printGrid(i, piece);
-        runTick(piece);
+        // runTick(piece);
         printf("Process %d: \n", rank);
         
         
