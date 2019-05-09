@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
 
     //initiate each subcube
     srand(seed+rank);
-    grid = (int*) malloc(piece * piece * sizeof(int));
+    int* grid = (int*) malloc(piece * piece * sizeof(int));
     for (int i = 0; i < piece; i++) {
         for (int j = 0; j < piece; j++) {
             grid[i * piece + j] = rand() % 2;
@@ -143,7 +143,7 @@ int main(int argc, char** argv) {
     MPI_Barrier(comm);
     delete[] grid;
     if (rank == 0)
-        delete[] allgrid;
+        free(allgrid);
     MPI_Finalize();
     return 0;
 }
