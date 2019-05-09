@@ -7,7 +7,7 @@ using namespace std;
 
 const int seed = 2019;
 const int iterationCount = 3;
-const int gridSize = 8;
+const int gridSize = 9;
 
 
 // We define 0 as dead, 1 as alive
