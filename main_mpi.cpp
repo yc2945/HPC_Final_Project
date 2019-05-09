@@ -81,6 +81,7 @@ int main(int argc, char** argv) {
         for (int j = 0; j < world_size; j++){
             if (rank == j)
                 printGrid(i, piece, rank);
+            MPI_Barrier(comm);
         }
         runTick(piece);
     }
