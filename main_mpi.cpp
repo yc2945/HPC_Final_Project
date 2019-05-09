@@ -11,13 +11,13 @@ int *grid;
 
 // We define 0 as dead, 1 as alive
 
-void runTick() {
-    int *newGrid = new int[gridSize * gridSize];
+void runTick(piece) {
+    int *newGrid = new int[piece * piece];
 
-    for (int i = 0; i < gridSize * gridSize; i++) {
+    for (int i = 0; i < piece * piece; i++) {
         int liveCount = 0;
-        int row = i / gridSize;
-        int col = i % gridSize;
+        int row = i / piece;
+        int col = i % piece;
 
         for (int m = -1; m <= 1; m++) {
             for (int n = -1; n <= 1; n++) {
@@ -25,9 +25,9 @@ void runTick() {
                 int neighborRow = row + m;
                 int neighborCol = col + n;
 
-                if (neighborRow < 0 || neighborCol >= gridSize || neighborCol < 0 || neighborCol >= gridSize) continue;
+                if (neighborRow < 0 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
 
-                if (grid[neighborRow * gridSize + neighborCol] == 1) liveCount++;
+                if (grid[neighborRow * piece + neighborCol] == 1) liveCount++;
             }
         }
 
