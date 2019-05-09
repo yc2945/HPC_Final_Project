@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
         int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
         printGrid(iterationCount, piece, 0);
         fillcube(grid, rank, rp, piece);
-        print('first cube filled')
+        print("first cube filled");
         for (int j = 1; j < world_size; j++){
             delete[] grid;
             grid = new int[piece * piece];
