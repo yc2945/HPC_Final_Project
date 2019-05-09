@@ -68,9 +68,10 @@ int main(int argc, char** argv) {
     MPI_Comm_size(comm, &world_size);
     int piece;
     piece = (int)sqrt(world_size);
-    if (fabs(piece - sqrt(world_size)) > 0.00001)
+    if (fabs(piece - sqrt(world_size)) > 0.00001){
         printf("Please use nodes number whose square root is an integer. ");
         abort();
+    }
     srand(seed+rank);
     grid = new int[piece * piece];
     for (int i = 0; i < piece; i++) {
