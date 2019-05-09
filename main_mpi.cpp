@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
             grid = (int*) malloc(piece * piece * sizeof(int));
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
             printGrid(grid, iterationCount, piece, j);
-            fillcube(grid, allgrid, rank, rp, piece);
+            fillcube(grid, allgrid, j, rp, piece);
         }
         
         printAllGrid(allgrid, iterationCount);   
