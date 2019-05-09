@@ -59,12 +59,13 @@ int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     
     int rank;
+    MPI_Comm comm = MPI_COMM_WORLD;
     MPI_Comm_rank(comm, &rank);
     int world_size;
     MPI_Comm_size(comm, &world_size);
     int piece;
     // need change
-    piece = 3 
+    piece = 3;
     
     srand(seed);
     grid = new int[gridSize * gridSize];
@@ -76,7 +77,7 @@ int main(int argc, char** argv) {
 
 
     for (int i = 0; i < iterationCount; i++) {
-        runTick(grid);
+        runTick();
         printGrid(i);
         
     }
