@@ -57,7 +57,28 @@ void printGrid(int iteration, int piece, int rank) {
     printf("\n");
 }
 
-// void fillcube(subcube, piece)
+void printAllGrid(int iteration,) {
+    printf("Process %d: \n", rank);
+    printf("Current Iteration: %d \n", iteration);
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            printf("%d ", allgrid[i * gridSize + j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void fillcube(subcube, rank, rp, piece){
+    // e.g. rank = 4,rp = 3, piece = 2, then row = 1, col_start = 2
+    int row_start = rank / rp;
+    int col_start = (rank % rp) * piece;
+    for (int i = 0; i < piece ; i++) {
+        for (int j = 0; j < piece; j++) {
+            allgrid[(row_start + i) * gridSize + col_start + j] = subcube[i * piece + j];
+        }
+    }
+}
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
@@ -69,14 +90,14 @@ int main(int argc, char** argv) {
     MPI_Comm_size(comm, &world_size);
     MPI_Status status;
 
-    // calculate the length of each subcube
-    
-    if (fabs((int)sqrt(world_size) - sqrt(world_size)) > 0.00001){
+    // calculate the rp of each subcube
+    int rp = (int)sqrt(world_size);
+    if (fabs(rp - sqrt(world_size)) > 0.00001){
         printf("Please use nodes number whose square root is an integer. \n \n");
         abort();
     }
     int piece;
-    piece = (int)(gridSize / (int)sqrt(world_size));
+    piece = (int)(gridSize / rp);
 
 
     //initiate each subcube
@@ -99,24 +120,26 @@ int main(int argc, char** argv) {
     }
 
     // master node gather subcubes 
-    // if rank != 0 {
-    //     MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
-    // }
-    // else{
-
-    //     for (int j = 0; j < world_size; j++){
-    //         MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
-    //     }
-    // }
-
-//     MPI Gather(grid, piece * piece, MPI_INT, grid, piece * piece, 0, comm);
-//     (void* sendbuff, int sendcount, MPI Datatype
-// sendtype, void* recvbuf, int recvcount, MPI Datatype
-// recvtype, int root, MPI Comm communicator)    
-//     printGrid(iterationCount - 1, piece, rank);
+    if rank != 0 {
+        MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
+    }
+    else{
+        int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
+        printGrid(iterationCount - 1, piece, 0);
+        fillcube(grid, rank, rp, piece);
+        for (int j = 1; j < world_size; j++){
+            grid = new int[piece * piece];
+            MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
+            printGrid(iterationCount - 1, piece, j);
+            fillcube(grid, rank, rp, piece);
+        }
+        printAllGrid(iterationCount - 1);
+    }
+  
 
     delete[] grid;
-    
+    if rank == 0
+        delete[] allgrid;
     MPI_Finalize();
     return 0;
 }
