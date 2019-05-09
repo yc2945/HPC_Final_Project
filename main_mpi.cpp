@@ -88,11 +88,11 @@ int main(int argc, char** argv) {
         }
         runTick(piece);
     }
-    MPI Gather(grid, piece * piece, MPI_INT, grid, piece * piece, 0, comm);
-    (void* sendbuff, int sendcount, MPI Datatype
-sendtype, void* recvbuf, int recvcount, MPI Datatype
-recvtype, int root, MPI Comm communicator)    
-    printGrid(iterationCount - 1, piece, rank);
+//     MPI Gather(grid, piece * piece, MPI_INT, grid, piece * piece, 0, comm);
+//     (void* sendbuff, int sendcount, MPI Datatype
+// sendtype, void* recvbuf, int recvcount, MPI Datatype
+// recvtype, int root, MPI Comm communicator)    
+//     printGrid(iterationCount - 1, piece, rank);
 
     delete[] grid;
     
