@@ -9,6 +9,12 @@ const int seed = 2019;
 const int iterationCount = 3;
 const int gridSize = 9;
 
+MPI_Status status;
+
+MPI_Request request_out1, request_in1;
+MPI_Request request_out2, request_in2;
+MPI_Request request_out3, request_in3;
+MPI_Request request_out4, request_in4;
 
 // We define 0 as dead, 1 as alive
 
@@ -106,12 +112,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 
 
 int main(int argc, char** argv) {
-    MPI_Status status;
 
-    MPI_Request request_out1, request_in1;
-    MPI_Request request_out2, request_in2;
-    MPI_Request request_out3, request_in3;
-    MPI_Request request_out4, request_in4;
     MPI_Init(&argc, &argv);
     
     int rank;
