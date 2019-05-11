@@ -85,18 +85,22 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // not at the top
     if (row_ind != 0){
         for (int i=0;i<piece;i++) top[i] = grid[i];
-        MPI_Isend(top, piece, MPI_INT, rank - rp, rank, comm, &request_out1);    
+        MPI_Isend(top, piece, MPI_INT, rank - rp, rank, comm, &request_out1);  
+        // MPI_Isend(&grid[0],, MPI_INT, rank - rp, rank, comm, &request_out1);    
     }
     free(top);
-    top = (int*) malloc(piece * sizeof(int));    
+    // top = (int*) malloc(piece * sizeof(int));
+    t = (int*) malloc(piece * sizeof(int));    
     // not at the bottom, receive info from the grid below, top here is the line below the bottom
     if (row_ind != rp){
-        MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
+        // MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
+        MPI_Irecv(t, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
     }
     MPI_Wait(&request_out1, &status);
     MPI_Wait(&request_in1, &status);
     if (row_ind != rp){
-        for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
+        // for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
+        for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, t[i]);
     }
 }
 
