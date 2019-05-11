@@ -123,6 +123,7 @@ int main(int argc, char** argv) {
     int world_size;
     MPI_Comm_size(comm, &world_size);
 
+    int name_len;
     char processor_name[MPI_MAX_PROCESSOR_NAME];
     MPI_Get_processor_name(processor_name, &name_len);
     printf("Rank %d/%d running on %s.\n", rank, world_size, processor_name);
