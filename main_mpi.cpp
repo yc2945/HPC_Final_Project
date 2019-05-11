@@ -155,8 +155,9 @@ int main(int argc, char** argv) {
                 printGrid(grid, i, piece, rank);
             MPI_Barrier(comm);
         }
-
-        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
+    MPI_Wait(&request_out1, &status);
+    MPI_Wait(&request_in1, &status);
+        //sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
         runTick(grid, piece);
 
