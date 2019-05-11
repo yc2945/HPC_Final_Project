@@ -100,7 +100,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     MPI_Wait(&request_in1, &status);
     if (row_ind != rp){
         // for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
-        for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, t[i]);
+        // for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, t[i]);
     }
 }
 
