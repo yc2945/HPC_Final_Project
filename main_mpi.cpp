@@ -75,9 +75,7 @@ void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
 }
 
 void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int rank, int rp,\
- int piece, MPI_Comm comm, MPI_Status status, MPI_Request request_out1,\
-             MPI_Request request_out2, MPI_Request request_out3, MPI_Request request_out4,\
-             MPI_Request request_in1, MPI_Request request_in2, MPI_Request request_in3, MPI_Request request_in4)
+ int piece, MPI_Comm comm)
 {
     // e.g. rank = 4,rp = 3, then row_ind = 1, col_ind = 1.
     int row_ind = (int)(rank / rp);
@@ -97,8 +95,8 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     //     // MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
     //     MPI_Irecv(t, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
     // }
-    // MPI_Wait(&request_out1, &status);
-    // MPI_Wait(&request_in1, &status);
+    MPI_Wait(&request_out1, &status);
+    MPI_Wait(&request_in1, &status);
     if (row_ind != rp){
         // for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
         // for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, t[i]);
@@ -157,9 +155,7 @@ int main(int argc, char** argv) {
             MPI_Barrier(comm);
         }
 
-        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm, status, request_out1,\
-             request_out2, request_out3, request_out4,request_in1, request_in2, request_in3, \
-             request_in4);
+        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
         runTick(grid, piece);
 
