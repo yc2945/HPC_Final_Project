@@ -13,7 +13,6 @@ const int gridSize = 9;
 // We define 0 as dead, 1 as alive
 
 void runTick(int *grid, int piece) {
-    //int *newGrid = new int[piece * piece];
 
     for (int i = 0; i < piece * piece; i++) {
         int liveCount = 0;
@@ -32,7 +31,6 @@ void runTick(int *grid, int piece) {
             }
         }
 
-        //newGrid[i] = grid[i];
         if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
             grid[i] = 0;
         }
@@ -41,7 +39,6 @@ void runTick(int *grid, int piece) {
         }
     }
 
-    //grid = newGrid;
 }
 
 void printGrid(int *grid, int iteration, int piece, int rank) {
@@ -67,9 +64,8 @@ void printAllGrid(int *allgrid,int iteration) {
 }
 
 void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
-    // e.g. rank = 4,rp = 3, piece = 2, then row = 1, col_start = 2
+    // e.g. rank = 4,rp = 3, piece = 2, then row = 2, col_start = 2
     int row_start = (int)(rank / rp * piece);
-    // printf("row_start = %d", row_start);
     int col_start = (int)(rank % rp) * piece;
     for (int i = 0; i < piece ; i++) {
         for (int j = 0; j < piece; j++) {
@@ -77,6 +73,25 @@ void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
         }
     }
 }
+
+def sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int rank, int rp, int piece, MPI_Comm comm, MPI_Status status){
+    // e.g. rank = 4,rp = 3, then row_ind = 1, col_ind = 1
+    int row_ind = (int)(rank / rp);
+    int col_ind = (int)(rank % rp);
+    // not at the top
+    if (row_ind != 0){
+        for (int i=0;i<piece;i++) top[i] = grid[i];
+        MPI_Send(top, piece, MPI_INT, rank - rp, rank, comm);    
+    }
+    // not at the bottom, receive info from the grid below, top here is the line below the bottom
+    if (row_ind != rp){
+        MPI_Recv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &status);
+        for (int i=0;i<piece;i++) printf("%d\n", top[i]);
+    }
+
+}
+
+
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
@@ -107,14 +122,24 @@ int main(int argc, char** argv) {
         }
     }
 
+
+    int* top = (int*) malloc(piece * sizeof(int));
+    int* bottom = (int*) malloc(piece * sizeof(int));
+    int* left = (int*) malloc(piece * sizeof(int));
+    int* right = (int*) malloc(piece * sizeof(int));
+
     //update each subcube
     for (int i = 0; i < iterationCount; i++) {
+
         for (int j = 0; j < world_size; j++){
             if (rank == j)
                 printGrid(grid, i, piece, rank);
             MPI_Barrier(comm);
         }
+
+        sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int rank, int rp, int piece, MPI_Comm comm, MPI_Status status)
         runTick(grid, piece);
+
     }
     MPI_Barrier(comm);
     // master node gather subcubes
@@ -145,7 +170,11 @@ int main(int argc, char** argv) {
     }   
   
     MPI_Barrier(comm);
-    delete[] grid;
+    free(grid);
+    free(top);
+    free(bottom);
+    free(left);
+    free(right);
     MPI_Finalize();
     return 0;
 }
