@@ -74,7 +74,7 @@ void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
     }
 }
 
-def sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int rank, int rp,\
+void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int rank, int rp,\
  int piece, MPI_Comm comm, MPI_Status status, MPI_Request request_out1,\
              MPI_Request request_out2, MPI_Request request_out3, MPI_Request request_out4,\
              MPI_Request request_in1, MPI_Request request_in2, MPI_Request request_in3, MPI_Request request_in4)
