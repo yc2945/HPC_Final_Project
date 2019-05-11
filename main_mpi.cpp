@@ -79,7 +79,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
              MPI_Request request_out2, MPI_Request request_out3, MPI_Request request_out4,\
              MPI_Request request_in1, MPI_Request request_in2, MPI_Request request_in3, MPI_Request request_in4)
 {
-    // e.g. rank = 4,rp = 3, then row_ind = 1, col_ind = 1
+    // e.g. rank = 4,rp = 3, then row_ind = 1, col_ind = 1.
     int row_ind = (int)(rank / rp);
     int col_ind = (int)(rank % rp);
 
