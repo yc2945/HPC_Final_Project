@@ -82,6 +82,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // e.g. rank = 4,rp = 3, then row_ind = 1, col_ind = 1
     int row_ind = (int)(rank / rp);
     int col_ind = (int)(rank % rp);
+
     // not at the top
     // if (row_ind != 0){
     //     for (int i=0;i<piece;i++) top[i] = grid[i];
@@ -107,6 +108,12 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 
 
 int main(int argc, char** argv) {
+    MPI_Status status;
+
+    MPI_Request request_out1, request_in1;
+    MPI_Request request_out2, request_in2;
+    MPI_Request request_out3, request_in3;
+    MPI_Request request_out4, request_in4;
     MPI_Init(&argc, &argv);
     
     int rank;
@@ -114,12 +121,7 @@ int main(int argc, char** argv) {
     MPI_Comm_rank(comm, &rank);
     int world_size;
     MPI_Comm_size(comm, &world_size);
-    MPI_Status status;
 
-    MPI_Request request_out1, request_in1;
-    MPI_Request request_out2, request_in2;
-    MPI_Request request_out3, request_in3;
-    MPI_Request request_out4, request_in4;
 
     // calculate the rp of each subcube
     int rp = (int)sqrt(world_size);
