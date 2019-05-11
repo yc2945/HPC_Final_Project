@@ -87,6 +87,8 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         for (int i=0;i<piece;i++) top[i] = grid[i];
         MPI_Isend(top, piece, MPI_INT, rank - rp, rank, comm, &request_out1);    
     }
+    free(top);
+    top = (int*) malloc(piece * sizeof(int));    
     // not at the bottom, receive info from the grid below, top here is the line below the bottom
     if (row_ind != rp){
         MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
