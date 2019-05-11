@@ -89,7 +89,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     }
     // not at the bottom, receive info from the grid below, top here is the line below the bottom
     if (row_ind != rp){
-        MPI_Recv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
+        MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
         for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
     }
     MPI_Wait(&request_out1, &status);
@@ -150,7 +150,7 @@ int main(int argc, char** argv) {
 
         sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm, status, request_out1,\
              request_out2, request_out3, request_out4,request_in1, request_in2, request_in3, \
-             request_in4)
+             request_in4);
         runTick(grid, piece);
 
     }
