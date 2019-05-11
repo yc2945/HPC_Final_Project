@@ -86,7 +86,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // e.g. rank = 4,rp = 3, then row_ind = 1, col_ind = 1.
     int row_ind = (int)(rank / rp);
     int col_ind = (int)(rank % rp);
-
+    printf("rank = %d, row_ind = %d \n", rank, row_ind);
     // not at the top
     if (row_ind != 0){
         for (int i=0;i<piece;i++) top[i] = grid[i];
