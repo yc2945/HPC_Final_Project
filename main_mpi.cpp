@@ -96,8 +96,8 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     //     // MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
     //     MPI_Irecv(t, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
     // }
-    MPI_Wait(&request_out1, &status);
-    MPI_Wait(&request_in1, &status);
+    // MPI_Wait(&request_out1, &status);
+    // MPI_Wait(&request_in1, &status);
     if (row_ind != rp){
         // for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
         // for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, t[i]);
