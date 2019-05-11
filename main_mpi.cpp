@@ -90,12 +90,12 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     }
     free(top);
     // top = (int*) malloc(piece * sizeof(int));
-    int *t = (int*) malloc(piece * sizeof(int));    
-    // not at the bottom, receive info from the grid below, top here is the line below the bottom
-    if (row_ind != rp){
-        // MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
-        MPI_Irecv(t, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
-    }
+    // int *t = (int*) malloc(piece * sizeof(int));    
+    // // not at the bottom, receive info from the grid below, top here is the line below the bottom
+    // if (row_ind != rp){
+    //     // MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
+    //     MPI_Irecv(t, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
+    // }
     MPI_Wait(&request_out1, &status);
     MPI_Wait(&request_in1, &status);
     if (row_ind != rp){
