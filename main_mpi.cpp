@@ -195,6 +195,13 @@ int main(int argc, char** argv) {
     MPI_Get_processor_name(processor_name, &name_len);
     printf("Rank %d/%d running on %s.\n", rank, world_size, processor_name);
 
+    // calculate the rp of each subcube
+    int rp = (int)sqrt(world_size);
+    if (fabs(rp - sqrt(world_size)) > 0.00001){
+        printf("Please use nodes number whose square root is an integer. \n \n");
+        abort();
+    }
+    
     // the length of the subcube
     int piece;
     piece = (int)(gridSize / rp);
@@ -205,12 +212,7 @@ int main(int argc, char** argv) {
     int* right = (int*) malloc(piece * sizeof(int));
     int* allgrid = (int*) malloc(gridSize * gridSize * sizeof(int));
 
-    // calculate the rp of each subcube
-    int rp = (int)sqrt(world_size);
-    if (fabs(rp - sqrt(world_size)) > 0.00001){
-        printf("Please use nodes number whose square root is an integer. \n \n");
-        abort();
-    }
+
 
 
 
