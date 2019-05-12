@@ -169,13 +169,14 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
         //     }
         // }
         fillcube(grid, allgrid, rank, rp, piece);
+        other_grid = (int*) malloc(piece * piece * sizeof(int));
         for (int j = 1; j < world_size; j++){
-            // free(grid);
-            // grid = (int*) malloc(piece * piece * sizeof(int));
-            MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
-            fillcube(grid, allgrid, j, rp, piece);
+            
+            MPI_Recv(other_grid, piece * piece, MPI_INT, j, j, comm, &status);
+            fillcube(other_grid, allgrid, j, rp, piece);
         }        
         printAllGrid(allgrid, iterationCount);
+        free(other_grid)
     }
 }
 
@@ -201,7 +202,7 @@ int main(int argc, char** argv) {
         printf("Please use nodes number whose square root is an integer. \n \n");
         abort();
     }
-    
+
     // the length of the subcube
     int piece;
     piece = (int)(gridSize / rp);
