@@ -128,9 +128,10 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     //     MPI_Irecv(right, piece, MPI_INT, rank - 1, rank - 1, comm, &request_in4);  
     // }
     printf("start waiting");
-    if (row_ind != 0)
+    if (row_ind != 0){
         MPI_Wait(&request_out1, &status);
         MPI_Wait(&request_in1, &status);
+    }
     printf("top done");
     // if (row_ind != 0)
     //     MPI_Wait(&request_out2, &status);
