@@ -157,7 +157,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 }
 
 // master node gather subcubes
-void gather(*allgrid, *grid, int rank, int piece, int rp, MPI_Comm comm){
+void gather(int *allgrid, int *grid, int rank, int piece, int rp, MPI_Comm comm){
 
     if (rank != 0) {
         MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
@@ -170,8 +170,8 @@ void gather(*allgrid, *grid, int rank, int piece, int rp, MPI_Comm comm){
         // }
         fillcube(grid, allgrid, rank, rp, piece);
         for (int j = 1; j < world_size; j++){
-            free(grid);
-            grid = (int*) malloc(piece * piece * sizeof(int));
+            // free(grid);
+            // grid = (int*) malloc(piece * piece * sizeof(int));
             MPI_Recv(grid, piece * piece, MPI_INT, j, j, comm, &status);
             fillcube(grid, allgrid, j, rp, piece);
         }        
