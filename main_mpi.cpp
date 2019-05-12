@@ -112,7 +112,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 
     //receive
     // not at the bottom, receive info from the grid below, top here is the part below the grid
-    if (row_ind != rp - 1){
+    if (row_ind != 0){
         MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
     }
     // // not at the top, receive info from the grid above, bottom here is the part above the grid
@@ -128,7 +128,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     //     MPI_Irecv(right, piece, MPI_INT, rank - 1, rank - 1, comm, &request_in4);  
     // }
     printf("start waiting");
-    if (row_ind != rp - 1)
+    if (row_ind != 0)
         MPI_Wait(&request_out1, &status);
         MPI_Wait(&request_in1, &status);
     printf("top done");
