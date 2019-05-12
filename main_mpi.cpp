@@ -45,6 +45,7 @@ void runTick(int *grid, int piece) {
             newGrid[i] = 1;
         }
     }
+    for (int i = 0; i < piece * piece; i++) {printf("%d\n", newGrid[i]);}
     grid = newGrid;
 }
 
