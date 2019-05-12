@@ -36,7 +36,7 @@ void runTick(int *grid, int piece, int rank) {
                 if (grid[neighborRow * piece + neighborCol] == 1) liveCount++;
             }
         }
-        if (rank == 1 && i == 6) {printf("%d, %d\n",grid[i],liveCount);}
+        // if (rank == 1 && i == 6) {printf("%d, %d\n",grid[i],liveCount);}
         newGrid[i] = grid[i];
         if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
             newGrid[i] = 0;
@@ -45,7 +45,8 @@ void runTick(int *grid, int piece, int rank) {
             newGrid[i] = 1;
         }
     }
-    for (int i = 0; i < piece * piece; i++) {grid[i] = newGrid[i];}
+    // for (int i = 0; i < piece * piece; i++) {grid[i] = newGrid[i];}
+    grid = newGrid
 }
 
 void printGrid(int *grid, int iteration, int piece, int rank) {
