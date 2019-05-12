@@ -36,6 +36,7 @@ void runTick(int *grid, int piece) {
                 if (grid[neighborRow * piece + neighborCol] == 1) liveCount++;
             }
         }
+        if (rank == 2 && i == 6) {printf("%d, %d\n",grid[i],liveCount);}
         newGrid[i] = grid[i];
         if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
             newGrid[i] = 0;
