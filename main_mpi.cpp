@@ -93,11 +93,11 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         for (int i=0;i<piece;i++) top[i] = grid[i];
         MPI_Isend(top, piece, MPI_INT, rank - rp, rank, comm, &request_out1);  
     }
-    // // not at the bottom
-    // if (row_ind != rp - 1){
-    //     for (int i=0;i<piece;i++) bottom[i] = grid[piece * (rp - 1) + i];
-    //     MPI_Isend(bottom, piece, MPI_INT, rank + rp, rank, comm, &request_out2);  
-    // }
+    // not at the bottom
+    if (row_ind != rp - 1){
+        for (int i=0;i<piece;i++) bottom[i] = grid[piece * (rp - 1) + i];
+        MPI_Isend(bottom, piece, MPI_INT, rank + rp, rank, comm, &request_out2);  
+    }
     // //not at the left side
     // if (col_ind != 0){
     //     for (int i=0;i<piece;i++) left[i] = grid[piece * i];
@@ -111,14 +111,14 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 
 
     //receive
-    // not at the bottom, receive info from the grid below, top here is the part below the grid
+    // not at the top, receive info from the grid above, bottom here is the part above the grid
     if (row_ind != 0){
         MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
     }
-    // // not at the top, receive info from the grid above, bottom here is the part above the grid
-    // if (row_ind != 0){
-    //     MPI_Irecv(bottom, piece, MPI_INT, rank - rp, rank - rp, comm, &request_in2);  
-    // }
+    // not at the bottom, receive info from the grid below, top here is the part below the grid
+    if (row_ind != rp - 1){
+        MPI_Irecv(bottom, piece, MPI_INT, rank - rp, rank - rp, comm, &request_in2);  
+    }
     // // not at the right side, receive info from the grid right, left here is the part right of the grid
     // if (col_ind != rp - 1){
     //     MPI_Irecv(left, piece, MPI_INT, rank + 1, rank + 1, comm, &request_in3);  
@@ -133,19 +133,22 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_in1, &status);
     }
     printf("top done");
-    // if (row_ind != 0)
-    //     MPI_Wait(&request_out2, &status);
-    //     MPI_Wait(&request_in1, &status);
-    // printf("bottom done");
-    // if (col_ind != 0)
+    if (row_ind != rp - 1){
+        MPI_Wait(&request_out2, &status);
+        MPI_Wait(&request_in2, &status);
+    }
+    printf("bottom done");
+    // if (col_ind != 0){
     //     MPI_Wait(&request_out3, &status);
     //     MPI_Wait(&request_in4, &status);
+    //}
     // printf("left done");
-    // if (col_ind != rp - 1)
+    // if (col_ind != rp - 1){
     //     MPI_Wait(&request_out4, &status);
     //     MPI_Wait(&request_in3, &status);
+    // }
     // printf("right done");
-
+    
     // if (row_ind != rp - 1){
     //     for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
     // }
