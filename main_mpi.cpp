@@ -36,8 +36,7 @@ void runTick(int *grid, int piece) {
                 if (grid[neighborRow * piece + neighborCol] == 1) liveCount++;
             }
         }
-        // newGrid[i] = grid[i];
-        newGrid[i] = 1;
+        newGrid[i] = grid[i];
         if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
             newGrid[i] = 0;
         }
@@ -227,13 +226,13 @@ int main(int argc, char** argv) {
     //update each subcube
     for (int i = 0; i < iterationCount; i++) {
 
-        // for (int j = 0; j < world_size; j++){
-        //     if (rank == j)
-        //         printGrid(grid, i, piece, rank);
-        //     MPI_Barrier(comm);
-        // }
-        gather(allgrid, grid, rank, piece, rp, world_size, comm);
-        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
+        for (int j = 0; j < world_size; j++){
+            if (rank == j)
+                printGrid(grid, i, piece, rank);
+            MPI_Barrier(comm);
+        }
+        // gather(allgrid, grid, rank, piece, rp, world_size, comm);
+        // sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
         runTick(grid, piece);
 
