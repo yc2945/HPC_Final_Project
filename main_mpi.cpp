@@ -112,13 +112,13 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 
     //receive
     // not at the bottom, receive info from the grid below, top here is the part below the grid
-    if (row_ind != rp - 1){
-        MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
-    }
-    // // not at the top, receive info from the grid above, bottom here is the part above the grid
-    // if (row_ind != 0){
-    //     MPI_Irecv(bottom, piece, MPI_INT, rank - rp, rank - rp, comm, &request_in2);  
+    // if (row_ind != rp - 1){
+    //     MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
     // }
+    // not at the top, receive info from the grid above, bottom here is the part above the grid
+    if (row_ind != 0){
+        MPI_Irecv(bottom, piece, MPI_INT, rank - rp, rank - rp, comm, &request_in2);  
+    }
     // // not at the right side, receive info from the grid right, left here is the part right of the grid
     // if (col_ind != rp - 1){
     //     MPI_Irecv(left, piece, MPI_INT, rank + 1, rank + 1, comm, &request_in3);  
