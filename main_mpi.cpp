@@ -157,7 +157,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 }
 
 // master node gather subcubes
-void gather(int *allgrid, int *grid, int rank, int piece, int rp, MPI_Comm comm){
+void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size, MPI_Comm comm){
 
     if (rank != 0) {
         MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
@@ -195,6 +195,9 @@ int main(int argc, char** argv) {
     MPI_Get_processor_name(processor_name, &name_len);
     printf("Rank %d/%d running on %s.\n", rank, world_size, processor_name);
 
+    // the length of the subcube
+    int piece;
+    piece = (int)(gridSize / rp);
 
     int* top = (int*) malloc(piece * sizeof(int));
     int* bottom = (int*) malloc(piece * sizeof(int));
@@ -208,8 +211,7 @@ int main(int argc, char** argv) {
         printf("Please use nodes number whose square root is an integer. \n \n");
         abort();
     }
-    int piece;
-    piece = (int)(gridSize / rp);
+
 
 
     //initiate each subcube
@@ -237,7 +239,7 @@ int main(int argc, char** argv) {
 
     }
     MPI_Barrier(comm);
-    gather(allgrid, grid, rank, piece, rp, comm);
+    gather(allgrid, grid, rank, piece, rp, world_size, comm);
 
   
     MPI_Barrier(comm);
