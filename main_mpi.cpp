@@ -163,11 +163,6 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
         MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
     }
     else{
-        // for (int i = 0; i < gridSize; i++) {
-        //     for (int j = 0; j < gridSize; j++) {
-        //     allgrid[i * gridSize + j] = 2;
-        //     }
-        // }
         fillcube(grid, allgrid, rank, rp, piece);
         int *other_grid = (int*) malloc(piece * piece * sizeof(int));
         for (int j = 1; j < world_size; j++){
@@ -230,11 +225,11 @@ int main(int argc, char** argv) {
     //update each subcube
     for (int i = 0; i < iterationCount; i++) {
 
-        // for (int j = 0; j < world_size; j++){
-        //     if (rank == j)
-        //         printGrid(grid, i, piece, rank);
-        //     MPI_Barrier(comm);
-        // }
+        for (int j = 0; j < world_size; j++){
+            if (rank == j)
+                printGrid(grid, i, piece, rank);
+            MPI_Barrier(comm);
+        }
         gather(allgrid, grid, rank, piece, rp, world_size, comm);
         sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
