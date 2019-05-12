@@ -176,7 +176,7 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
             fillcube(other_grid, allgrid, j, rp, piece);
         }        
         printAllGrid(allgrid, iterationCount);
-        free(other_grid)
+        free(other_grid);
     }
 }
 
