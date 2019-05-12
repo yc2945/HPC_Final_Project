@@ -38,10 +38,10 @@ void runTick(int *grid, int piece) {
         }
         newGrid[i] = grid[i];
         if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
-            newgrid[i] = 0;
+            newGrid[i] = 0;
         }
         if (grid[i] == 0 && liveCount == 3) {
-            newgrid[i] = 1;
+            newGrid[i] = 1;
         }
     }
     grid = newGrid;
