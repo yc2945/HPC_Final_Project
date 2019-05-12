@@ -121,9 +121,9 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_out1, &status);
     if (row_ind != rp - 1)
         MPI_Wait(&request_in1, &status);
-    // if (row_ind != rp - 1){
-    //     for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
-    // }
+    if (row_ind != rp - 1){
+        for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
+    }
 }
 
 
