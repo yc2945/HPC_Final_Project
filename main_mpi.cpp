@@ -18,7 +18,7 @@ MPI_Request request_out4, request_in4;
 
 // We define 0 as dead, 1 as alive
 
-void runTick(int *grid, int piece) {
+void runTick(int *grid, int piece, int rank) {
     int *newGrid = new int[piece * piece];
     for (int i = 0; i < piece * piece; i++) {
         int liveCount = 0;
@@ -234,7 +234,7 @@ int main(int argc, char** argv) {
         gather(allgrid, grid, rank, piece, rp, world_size, comm);
         sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
-        runTick(grid, piece);
+        runTick(grid, piece, rank);
 
     }
     MPI_Barrier(comm);
