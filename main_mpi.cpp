@@ -44,7 +44,7 @@ void runTick(int *grid, int piece) {
             newGrid[i] = 1;
         }
     }
-    for (int i = 0; i < piece * piece; i++) {printf("%d\n", newGrid[i]);}
+    for (int i = 0; i < piece * piece; i++) {newGrid[i] = 0;}
     grid = newGrid;
 }
 
@@ -231,8 +231,8 @@ int main(int argc, char** argv) {
                 printGrid(grid, i, piece, rank);
             MPI_Barrier(comm);
         }
-        // gather(allgrid, grid, rank, piece, rp, world_size, comm);
-        // sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
+        gather(allgrid, grid, rank, piece, rp, world_size, comm);
+        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
         runTick(grid, piece);
 
