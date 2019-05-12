@@ -86,14 +86,32 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // e.g. rank = 4,rp = 3, then row_ind = 1, col_ind = 1.
     int row_ind = (int)(rank / rp);
     int col_ind = (int)(rank % rp);
-    printf("rank = %d, row_ind = %d \n", rank, row_ind);
     // not at the top
     if (row_ind != 0){
         for (int i=0;i<piece;i++) top[i] = grid[i];
         MPI_Isend(top, piece, MPI_INT, rank - rp, rank, comm, &request_out1);  
     }
-    free(top);
-    top = (int*) malloc(piece * sizeof(int));
+    // // not at the bottom
+    // if (row_ind != rp - 1){
+    //     for (int i=0;i<piece;i++) bottom[i] = grid[piece * (rp - 1) + i];
+    //     MPI_Isend(bottom, piece, MPI_INT, rank + rp, rank, comm, &request_out2);  
+    // }
+    // //not at the left side
+    // if (col_ind != 0){
+    //     for (int i=0;i<piece;i++) left[i] = grid[piece * i];
+    //     MPI_Isend(left, piece, MPI_INT, rank - 1, rank, comm, &request_out3);  
+    // }
+    // //not at the right side
+    // if (col_ind != rp - 1){
+    //     for (int i=0;i<piece;i++) right[i] = grid[piece * i + piece - 1];
+    //     MPI_Isend(right, piece, MPI_INT, rank + 1, rank, comm, &request_out4);  
+    // }
+    // free(top);
+    // free(top);
+    // free(top);
+    // free(top);
+    
+    // top = (int*) malloc(piece * sizeof(int));
     // int *t = (int*) malloc(piece * sizeof(int));    
     // not at the bottom, receive info from the grid below, top here is the line below the bottom
     if (row_ind != rp - 1){
@@ -103,10 +121,9 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_out1, &status);
     if (row_ind != rp - 1)
         MPI_Wait(&request_in1, &status);
-    if (row_ind != rp - 1){
-        // for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
-        for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
-    }
+    // if (row_ind != rp - 1){
+    //     for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
+    // }
 }
 
 
