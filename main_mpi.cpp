@@ -19,7 +19,7 @@ MPI_Request request_out4, request_in4;
 // We define 0 as dead, 1 as alive
 
 void runTick(int *grid, int piece) {
-
+    int *newGrid = new int[gridSize * gridSize];
     for (int i = 0; i < piece * piece; i++) {
         int liveCount = 0;
         int row = i / piece;
@@ -36,15 +36,15 @@ void runTick(int *grid, int piece) {
                 if (grid[neighborRow * piece + neighborCol] == 1) liveCount++;
             }
         }
-
+        newGrid[i] = grid[i];
         if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
-            grid[i] = 0;
+            newgrid[i] = 0;
         }
         if (grid[i] == 0 && liveCount == 3) {
-            grid[i] = 1;
+            newgrid[i] = 1;
         }
     }
-
+    grid = newGrid;
 }
 
 void printGrid(int *grid, int iteration, int piece, int rank) {
@@ -225,13 +225,13 @@ int main(int argc, char** argv) {
     //update each subcube
     for (int i = 0; i < iterationCount; i++) {
 
-        for (int j = 0; j < world_size; j++){
-            if (rank == j)
-                printGrid(grid, i, piece, rank);
-            MPI_Barrier(comm);
-        }
-        // gather(allgrid, grid, rank, piece, rp, world_size, comm);
-        // sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
+        // for (int j = 0; j < world_size; j++){
+        //     if (rank == j)
+        //         printGrid(grid, i, piece, rank);
+        //     MPI_Barrier(comm);
+        // }
+        gather(allgrid, grid, rank, piece, rp, world_size, comm);
+        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
         runTick(grid, piece);
 
