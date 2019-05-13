@@ -56,8 +56,8 @@ void runTick(int *grid, int piece, int rank) {
                     }
                 }
 
-
-                val = grid[ind];
+                val = 0
+                //val = grid[ind];
                 if (grid[ind] == 1 && (liveCount < 2 || liveCount > 3)) {
                     val = 0;
                 }
