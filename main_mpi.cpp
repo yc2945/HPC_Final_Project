@@ -18,8 +18,26 @@ MPI_Request request_out4, request_in4;
 
 // We define 0 as dead, 1 as alive
 
-void runTick(int *grid, int piece, int rank) {
-    int *newGrid = new int[piece * piece];
+void runTick(int *grid, int* top, int* bottom, int* left, int* right, int piece, int rank) {
+    
+    if (row_ind != rp - 1){
+        MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
+    }
+    // not at the top, receive info from the grid above, bottom here is the part above the grid
+    if (row_ind != 0){
+        MPI_Irecv(bottom, piece, MPI_INT, rank - rp, rank - rp, comm, &request_in2);  
+    }
+
+    // not at the right side, receive info from the grid right, left here is the part right of the grid
+    if (col_ind != rp - 1){
+        MPI_Irecv(left, piece, MPI_INT, rank + 1, rank + 1, comm, &request_in3);  
+    }
+    // not at the left side, receive info from the grid left, right here is the part left of the grid
+    if (col_ind != 0){
+        MPI_Irecv(right, piece, MPI_INT, rank - 1, rank - 1, comm, &request_in4);  
+    }   
+
+    int *newGrid = (int*) malloc(piece * piece * sizeof(int));
     for (int i = 0; i < piece * piece; i++) {
         int liveCount = 0;
         int row = i / piece;
@@ -36,7 +54,8 @@ void runTick(int *grid, int piece, int rank) {
                 if (grid[neighborRow * piece + neighborCol] == 1) liveCount++;
             }
         }
-        // if (rank == 1 && i == 6) {printf("%d, %d\n",grid[i],liveCount);}
+
+
         newGrid[i] = grid[i];
         if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
             newGrid[i] = 0;
@@ -73,6 +92,9 @@ void printAllGrid(int *allgrid,int iteration) {
 
 void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
     // e.g. rank = 4,rp = 3, piece = 2, then row = 2, col_start = 2
+    int* temp  = (int*) malloc(piece * piece ) * sizeof(int);
+    transform(grid, temp, piece);
+    grid = temp;
     int row_start = (int)(rank / rp * piece);
     int col_start = (int)(rank % rp) * piece;
     for (int i = 0; i < piece ; i++) {
@@ -80,6 +102,7 @@ void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
             allgrid[(row_start + i) * gridSize + col_start + j] = grid[i * piece + j];
         }
     }
+    free(temp);
 }
 
 void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int rank, int rp,\
@@ -159,22 +182,31 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 }
 
 // master node gather subcubes
-void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size, MPI_Comm comm){
 
+void transform(int* biggrid, int*smallgrid, int piece){
+    for (int i = 1; i < piece + 1; i++) {
+        for (int j = 1; j < piece + 1; j++) {
+            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * piece + j]
+}
+
+void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size, MPI_Comm comm){
     if (rank != 0) {
-        MPI_Send(grid, piece * piece, MPI_INT, 0, rank, comm);
+        MPI_Send(grid, (piece + 1) *(piece + 1), MPI_INT, 0, rank, comm);
     }
     else{
         fillcube(grid, allgrid, rank, rp, piece);
-        int *other_grid = (int*) malloc(piece * piece * sizeof(int));
+        int *other_grid = (int*) malloc((piece + 1) * (piece + 1) * sizeof(int));
         for (int j = 1; j < world_size; j++){
             
-            MPI_Recv(other_grid, piece * piece, MPI_INT, j, j, comm, &status);
+            MPI_Recv(other_grid, (piece + 1) * (piece + 1), MPI_INT, j, j, comm, &status);
+
             fillcube(other_grid, allgrid, j, rp, piece);
         }        
         printAllGrid(allgrid, iterationCount);
         free(other_grid);
+
     }
+    
 }
 
 
@@ -216,10 +248,14 @@ int main(int argc, char** argv) {
 
     //initiate each subcube
     srand(seed+rank);
-    int* grid = (int*) malloc(piece * piece * sizeof(int));
-    for (int i = 0; i < piece; i++) {
-        for (int j = 0; j < piece; j++) {
-            grid[i * piece + j] = rand() % 2;
+    int* grid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
+    for (int i = 0; i < piece + 2; i++) {
+        for (int j = 0; j < piece + 2; j++) {
+            if (i == 0 || i == piece - 1 || j == 0 || j == piece - 1 )
+                val = 0
+            else
+                val = rand() % 2
+            grid[i * piece + j] = val;
         }
     }
 
@@ -233,9 +269,9 @@ int main(int argc, char** argv) {
         //     MPI_Barrier(comm);
         // }
         gather(allgrid, grid, rank, piece, rp, world_size, comm);
-        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
-        MPI_Barrier(comm);
-        runTick(grid, piece, rank);
+        // sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
+        // MPI_Barrier(comm);
+        // runTick(grid, top, bottom, left, right, piece, rank);
 
     }
     MPI_Barrier(comm);
