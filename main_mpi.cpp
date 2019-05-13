@@ -56,8 +56,7 @@ void runTick(int *grid, int piece, int rank) {
                     }
                 }
 
-                val = 0;
-                //val = grid[ind];
+                val = grid[i];
                 if (grid[ind] == 1 && (liveCount < 2 || liveCount > 3)) {
                     val = 0;
                 }
@@ -65,7 +64,7 @@ void runTick(int *grid, int piece, int rank) {
                     val = 1;
                 }
             }
-            newGrid[ind] = val;
+            newGrid[i] = val;
         }
     }
     for (int i = 0; i < (piece+2) * (piece+2); i++) {grid[i] = newGrid[i];}
