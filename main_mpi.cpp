@@ -147,6 +147,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // not at the bottom, receive info from the grid below, top here is the part below the grid
     if (row_ind != rp - 1){
         MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
+        for (int i = 0; i < piece; i++) {grid[(piece + 2) * (rp + 1) + 1 + i] = top[i]}
     }
     // not at the top, receive info from the grid above, bottom here is the part above the grid
     if (row_ind != 0){
@@ -187,9 +188,9 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // if (col_ind != rp - 1){
     //     for (int i=0;i<piece;i++) printf("rank = %d, left = %d\n", rank, left[i]);
     // }
-    if (col_ind != 0){
-        for (int i=0;i<piece;i++) printf("rank = %d, right = %d\n", rank, right[i]);
-    }
+    // if (col_ind != 0){
+    //     for (int i=0;i<piece;i++) printf("rank = %d, right = %d\n", rank, right[i]);
+    // }
 }
 
 // master node gather subcubes
@@ -270,14 +271,15 @@ int main(int argc, char** argv) {
     //update each subcube
     for (int i = 0; i < iterationCount; i++) {
 
+
+        gather(allgrid, grid, rank, piece, rp, world_size, comm);
+        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
+        MPI_Barrier(comm);
         for (int j = 0; j < world_size; j++){
             if (rank == j)
                 printGrid(grid, i, piece, rank);
             MPI_Barrier(comm);
         }
-        gather(allgrid, grid, rank, piece, rp, world_size, comm);
-        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
-        MPI_Barrier(comm);
         // runTick(grid, top, bottom, left, right, piece, rank);
 
     }
