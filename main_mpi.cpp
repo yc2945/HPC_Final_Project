@@ -63,7 +63,7 @@ void runTick(int *grid, int piece, int rank) {
                     val = 1;
                 }
             }
-            newGrid[ind] = val;
+            newGrid[i * (piece + 2) + j] = val;
         }
     }
     for (int i = 0; i < (piece+2) * (piece+2); i++) {grid[i] = newGrid[i];}
