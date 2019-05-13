@@ -21,7 +21,7 @@ MPI_Request request_out4, request_in4;
 void transform(int* biggrid, int*smallgrid, int piece){
     for (int i = 1; i < piece + 1; i++) {
         for (int j = 1; j < piece + 1; j++) {
-            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * piece + j];
+            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * piece  + j];
 
         }
     }
@@ -194,11 +194,11 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 
 void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size, MPI_Comm comm){
     if (rank != 0) {
-        MPI_Send(grid, (piece + 1) *(piece + 1), MPI_INT, 0, rank, comm);
+        MPI_Send(grid, (piece + 2) *(piece + 2), MPI_INT, 0, rank, comm);
     }
     else{
         fillcube(grid, allgrid, rank, rp, piece);
-        int *other_grid = (int*) malloc((piece + 1) * (piece + 1) * sizeof(int));
+        int *other_grid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
         for (int j = 1; j < world_size; j++){
             
             MPI_Recv(other_grid, (piece + 1) * (piece + 1), MPI_INT, j, j, comm, &status);
