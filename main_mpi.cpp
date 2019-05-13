@@ -133,14 +133,14 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     }
     //not at the left side
     if (col_ind != 0){
-        for (int i=0;i<piece;i++) left[i] = grid[(piece + 2) * (i+1) + 1];
+        for (int i=0;i<piece;i++) left[i] = grid[(piece + 2) * (i + 1) + 1];
         MPI_Isend(left, piece, MPI_INT, rank - 1, rank, comm, &request_out3);  
     }
-    // //not at the right side
-    // if (col_ind != rp - 1){
-    //     for (int i=0;i<piece;i++) right[i] = grid[piece * i + piece - 1];
-    //     MPI_Isend(right, piece, MPI_INT, rank + 1, rank, comm, &request_out4);  
-    // }
+    //not at the right side
+    if (col_ind != rp - 1){
+        for (int i=0;i<piece;i++) right[i] = grid[(piece + 2) * (i + 1) + piece + 1];
+        MPI_Isend(right, piece, MPI_INT, rank + 1, rank, comm, &request_out4);  
+    }
 
 
     //receive
@@ -157,10 +157,10 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     if (col_ind != rp - 1){
         MPI_Irecv(left, piece, MPI_INT, rank + 1, rank + 1, comm, &request_in3);  
     }
-    // // not at the left side, receive info from the grid left, right here is the part left of the grid
-    // if (col_ind != 0){
-    //     MPI_Irecv(right, piece, MPI_INT, rank - 1, rank - 1, comm, &request_in4);  
-    // }
+    // not at the left side, receive info from the grid left, right here is the part left of the grid
+    if (col_ind != 0){
+        MPI_Irecv(right, piece, MPI_INT, rank - 1, rank - 1, comm, &request_in4);  
+    }
     if (row_ind != 0){
         MPI_Wait(&request_out1, &status);
         MPI_Wait(&request_in2, &status);
@@ -170,12 +170,12 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_in1, &status);
     }
     if (col_ind != rp - 1){
-        // MPI_Wait(&request_out4, &status);
+        MPI_Wait(&request_out4, &status);
         MPI_Wait(&request_in3, &status);
     }
     if (col_ind != 0){
         MPI_Wait(&request_out3, &status);
-        // MPI_Wait(&request_in4, &status);
+        MPI_Wait(&request_in4, &status);
     }
     
     // if (row_ind != rp - 1){
