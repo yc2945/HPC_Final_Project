@@ -20,22 +20,22 @@ MPI_Request request_out4, request_in4;
 
 void runTick(int *grid, int* top, int* bottom, int* left, int* right, int piece, int rank) {
     
-    if (row_ind != rp - 1){
-        MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
-    }
-    // not at the top, receive info from the grid above, bottom here is the part above the grid
-    if (row_ind != 0){
-        MPI_Irecv(bottom, piece, MPI_INT, rank - rp, rank - rp, comm, &request_in2);  
-    }
+    // if (row_ind != rp - 1){
+    //     MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
+    // }
+    // // not at the top, receive info from the grid above, bottom here is the part above the grid
+    // if (row_ind != 0){
+    //     MPI_Irecv(bottom, piece, MPI_INT, rank - rp, rank - rp, comm, &request_in2);  
+    // }
 
-    // not at the right side, receive info from the grid right, left here is the part right of the grid
-    if (col_ind != rp - 1){
-        MPI_Irecv(left, piece, MPI_INT, rank + 1, rank + 1, comm, &request_in3);  
-    }
-    // not at the left side, receive info from the grid left, right here is the part left of the grid
-    if (col_ind != 0){
-        MPI_Irecv(right, piece, MPI_INT, rank - 1, rank - 1, comm, &request_in4);  
-    }   
+    // // not at the right side, receive info from the grid right, left here is the part right of the grid
+    // if (col_ind != rp - 1){
+    //     MPI_Irecv(left, piece, MPI_INT, rank + 1, rank + 1, comm, &request_in3);  
+    // }
+    // // not at the left side, receive info from the grid left, right here is the part left of the grid
+    // if (col_ind != 0){
+    //     MPI_Irecv(right, piece, MPI_INT, rank - 1, rank - 1, comm, &request_in4);  
+    // }   
 
     int *newGrid = (int*) malloc(piece * piece * sizeof(int));
     for (int i = 0; i < piece * piece; i++) {
@@ -92,7 +92,7 @@ void printAllGrid(int *allgrid,int iteration) {
 
 void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
     // e.g. rank = 4,rp = 3, piece = 2, then row = 2, col_start = 2
-    int* temp  = (int*) malloc(piece * piece ) * sizeof(int);
+    int* temp  = (int*) malloc(piece * piece * sizeof(int));
     transform(grid, temp, piece);
     grid = temp;
     int row_start = (int)(rank / rp * piece);
@@ -186,7 +186,10 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 void transform(int* biggrid, int*smallgrid, int piece){
     for (int i = 1; i < piece + 1; i++) {
         for (int j = 1; j < piece + 1; j++) {
-            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * piece + j]
+            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * piece + j];
+
+        }
+    }
 }
 
 void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size, MPI_Comm comm){
