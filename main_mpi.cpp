@@ -259,7 +259,7 @@ int main(int argc, char** argv) {
                 val = 0;
             else
                 val = rand() % 2;
-            grid[i * piece + j] = val;
+            grid[i * (piece + 2) + j] = val;
         }
     }
 
