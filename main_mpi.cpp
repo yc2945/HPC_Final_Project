@@ -18,6 +18,14 @@ MPI_Request request_out4, request_in4;
 
 // We define 0 as dead, 1 as alive
 
+void transform(int* biggrid, int*smallgrid, int piece){
+    for (int i = 1; i < piece + 1; i++) {
+        for (int j = 1; j < piece + 1; j++) {
+            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * piece + j];
+
+        }
+    }
+}
 void runTick(int *grid, int* top, int* bottom, int* left, int* right, int piece, int rank) {
     
     // if (row_ind != rp - 1){
@@ -183,14 +191,6 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 
 // master node gather subcubes
 
-void transform(int* biggrid, int*smallgrid, int piece){
-    for (int i = 1; i < piece + 1; i++) {
-        for (int j = 1; j < piece + 1; j++) {
-            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * piece + j];
-
-        }
-    }
-}
 
 void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size, MPI_Comm comm){
     if (rank != 0) {
@@ -252,12 +252,13 @@ int main(int argc, char** argv) {
     //initiate each subcube
     srand(seed+rank);
     int* grid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
+    int val;
     for (int i = 0; i < piece + 2; i++) {
         for (int j = 0; j < piece + 2; j++) {
             if (i == 0 || i == piece - 1 || j == 0 || j == piece - 1 )
-                val = 0
+                val = 0;
             else
-                val = rand() % 2
+                val = rand() % 2;
             grid[i * piece + j] = val;
         }
     }
