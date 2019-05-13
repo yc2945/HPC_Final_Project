@@ -79,8 +79,8 @@ void runTick(int *grid, int* top, int* bottom, int* left, int* right, int piece,
 void printGrid(int *grid, int iteration, int piece, int rank) {
     printf("Process %d: \n", rank);
     printf("Current Iteration: %d \n", iteration);
-    for (int i = 0; i < piece + 1; i++) {
-        for (int j = 0; j < piece + 1; j++) {
+    for (int i = 0; i < piece + 2; i++) {
+        for (int j = 0; j < piece + 2; j++) {
             printf("%d ", grid[i * (piece + 2) + j]);
         }
         printf("\n");
@@ -255,7 +255,7 @@ int main(int argc, char** argv) {
     int val;
     for (int i = 0; i < piece + 2; i++) {
         for (int j = 0; j < piece + 2; j++) {
-            if (i == 0 || i == piece - 1 || j == 0 || j == piece - 1 )
+            if (i == 0 || i == piece + 1 || j == 0 || j == piece + 1 )
                 val = 0;
             else
                 val = rand() % 2;
