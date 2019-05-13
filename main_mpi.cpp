@@ -32,7 +32,6 @@ void runTick(int *grid, int piece, int rank) {
     int liveCount;
     int row, col, val, ind;
 
-    //for (int i = 1; i < (piece  + 1) * (piece  + 1); i++) 
     for (int i = 0; i < piece + 2; i++) {
         for (int j = 0; j < piece + 2; j++) {
             if (i == 0 || i == piece + 1 || j == 0 || j == piece + 1 )
