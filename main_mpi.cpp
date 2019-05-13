@@ -28,7 +28,7 @@ void transform(int* biggrid, int*smallgrid, int piece){
 }
 void runTick(int *grid, int piece, int rank) {
     
-    int *newGrid = (int*) malloc((piece + 1) * (piece + 1) * sizeof(int));
+    int *newGrid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
     int liveCount;
     int row, col, val, ind;
 
@@ -64,7 +64,7 @@ void runTick(int *grid, int piece, int rank) {
                     val = 1;
                 }
             }
-            newGrid[i] = val;
+            newGrid[ind] = val;
         }
     }
     for (int i = 0; i < (piece+2) * (piece+2); i++) {grid[i] = newGrid[i];}
