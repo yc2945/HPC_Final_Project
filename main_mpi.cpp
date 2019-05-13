@@ -177,6 +177,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_out3, &status);
         MPI_Wait(&request_in4, &status);
     }
+    if (rank == 2){printf("rank = 2, top = %d", top);}
     if (row_ind != rp - 1){
         for (int i = 0; i < piece; i++) {grid[(piece + 2) * (rp + 1) + 1 + i] = top[i];}
     }
