@@ -201,7 +201,7 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
         int *other_grid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
         for (int j = 1; j < world_size; j++){
             
-            MPI_Recv(other_grid, (piece + 1) * (piece + 1), MPI_INT, j, j, comm, &status);
+            MPI_Recv(other_grid, (piece + 2) * (piece + 2), MPI_INT, j, j, comm, &status);
 
             fillcube(other_grid, allgrid, j, rp, piece);
         }        
