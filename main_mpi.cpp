@@ -79,9 +79,9 @@ void runTick(int *grid, int* top, int* bottom, int* left, int* right, int piece,
 void printGrid(int *grid, int iteration, int piece, int rank) {
     printf("Process %d: \n", rank);
     printf("Current Iteration: %d \n", iteration);
-    for (int i = 0; i < piece; i++) {
-        for (int j = 0; j < piece; j++) {
-            printf("%d ", grid[i * piece + j]);
+    for (int i = 0; i < piece + 1; i++) {
+        for (int j = 0; j < piece + 1; j++) {
+            printf("%d ", grid[i * (piece + 2) + j]);
         }
         printf("\n");
     }
@@ -123,7 +123,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     //send
     // not at the top
     if (row_ind != 0){
-        for (int i=0;i<piece;i++) top[i] = grid[i];
+        for (int i=0;i<piece;i++) top[i] = grid[piece + 2 + i];
         MPI_Isend(top, piece, MPI_INT, rank - rp, rank, comm, &request_out1);  
     }
     // not at the bottom
@@ -178,9 +178,9 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_in4, &status);
     }
     
-    // if (row_ind != rp - 1){
-    //     for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
-    // }
+    if (row_ind != rp - 1){
+        for (int i=0;i<piece;i++) printf("rank = %d, top = %d\n", rank, top[i]);
+    }
     // if (col_ind != rp - 1){
     //     for (int i=0;i<piece;i++) printf("rank = %d, left = %d\n", rank, left[i]);
     // }
@@ -267,11 +267,11 @@ int main(int argc, char** argv) {
     //update each subcube
     for (int i = 0; i < iterationCount; i++) {
 
-        // for (int j = 0; j < world_size; j++){
-        //     if (rank == j)
-        //         printGrid(grid, i, piece, rank);
-        //     MPI_Barrier(comm);
-        // }
+        for (int j = 0; j < world_size; j++){
+            if (rank == j)
+                printGrid(grid, i, piece, rank);
+            MPI_Barrier(comm);
+        }
         gather(allgrid, grid, rank, piece, rp, world_size, comm);
         // sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         // MPI_Barrier(comm);
