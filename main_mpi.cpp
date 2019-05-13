@@ -49,7 +49,7 @@ void runTick(int *grid, int piece, int rank) {
                         int neighborRow = row + m;
                         int neighborCol = col + n;
 
-                        if (neighborRow < 0 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
+                        // if (neighborRow < 1 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
 
                         if (grid[neighborRow * (piece + 2) + neighborCol] == 1) liveCount++;
                     }
@@ -281,11 +281,11 @@ int main(int argc, char** argv) {
         gather(allgrid, grid, rank, piece, rp, world_size, comm);
         sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
-        // for (int j = 0; j < world_size; j++){
-        //     if (rank == j)
-        //         printGrid(grid, i, piece, rank);
-        //     MPI_Barrier(comm);
-        // }
+        for (int j = 0; j < world_size; j++){
+            if (rank == j)
+                printGrid(grid, i, piece, rank);
+            MPI_Barrier(comm);
+        }
         runTick(grid, piece, rank);
 
     }
