@@ -28,32 +28,45 @@ void transform(int* biggrid, int*smallgrid, int piece){
 }
 void runTick(int *grid, int piece, int rank) {
     
-    int *newGrid = (int*) malloc(piece * piece * sizeof(int));
-    for (int i = 0; i < piece * piece; i++) {
-        int liveCount = 0;
-        int row = i / piece;
-        int col = i % piece;
+    int *newGrid = (int*) malloc((piece + 1) * (piece + 1) * sizeof(int));
+    int liveCount;
+    int row;
+    int col;
+    int val;
+    //for (int i = 1; i < (piece  + 1) * (piece  + 1); i++) 
+    for (int i = 0; i < piece + 2; i++) {
+        for (int j = 0; j < piece + 2; j++) {
+            if (i == 0 || i == piece + 1 || j == 0 || j == piece + 1 )
+                val = 0;
 
-        for (int m = -1; m <= 1; m++) {
-            for (int n = -1; n <= 1; n++) {
-                if (m == 0 && n == 0) continue;
-                int neighborRow = row + m;
-                int neighborCol = col + n;
+            else{
+                ind = i * (piece + 2) + j
+                liveCount = 0;
+                row = i;
+                col = j;
 
-                if (neighborRow < 0 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
+                for (int m = -1; m <= 1; m++) {
+                    for (int n = -1; n <= 1; n++) {
+                        if (m == 0 && n == 0) continue;
+                        int neighborRow = row + m;
+                        int neighborCol = col + n;
 
-                if (grid[neighborRow * piece + neighborCol] == 1) liveCount++;
+                        if (neighborRow < 0 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
+
+                        if (grid[neighborRow * (piece + 2) + neighborCol] == 1) liveCount++;
+                    }
+                }
+
+
+                val = grid[i];
+                if (grid[ind] == 1 && (liveCount < 2 || liveCount > 3)) {
+                    val = 0;
+                }
+                if (grid[ind] == 0 && liveCount == 3) {
+                    val = 1;
+                }
             }
-        }
-
-
-        newGrid[i] = grid[i];
-        if (grid[i] == 1 && (liveCount < 2 || liveCount > 3)) {
-            newGrid[i] = 0;
-        }
-        if (grid[i] == 0 && liveCount == 3) {
-            newGrid[i] = 1;
-        }
+            newGrid[i] = val;
     }
     for (int i = 0; i < piece * piece; i++) {grid[i] = newGrid[i];}
     // grid = newGrid;
