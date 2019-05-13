@@ -133,7 +133,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     }
     //not at the left side
     if (col_ind != 0){
-        for (int i=0;i<piece;i++) left[i] = grid[(piece + 2) * i + 1];
+        for (int i=0;i<piece;i++) left[i] = grid[(piece + 2) * (i+1) + 1];
         MPI_Isend(left, piece, MPI_INT, rank - 1, rank, comm, &request_out3);  
     }
     // //not at the right side
