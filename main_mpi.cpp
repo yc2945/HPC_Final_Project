@@ -21,7 +21,7 @@ MPI_Request request_out4, request_in4;
 void transform(int* biggrid, int*smallgrid, int piece){
     for (int i = 1; i < piece + 1; i++) {
         for (int j = 1; j < piece + 1; j++) {
-            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * piece  + j];
+            smallgrid[(i - 1) * piece + j - 1] = biggrid[i * (piece + 2)  + j];
 
         }
     }
