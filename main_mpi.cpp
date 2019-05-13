@@ -270,11 +270,11 @@ int main(int argc, char** argv) {
         gather(allgrid, grid, rank, piece, rp, world_size, comm);
         sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
-        // for (int j = 0; j < world_size; j++){
-        //     if (rank == j)
-        //         printGrid(grid, i, piece, rank);
-        //     MPI_Barrier(comm);
-        // }
+        for (int j = 0; j < world_size; j++){
+            if (rank == j)
+                printGrid(grid, i, piece, rank);
+            MPI_Barrier(comm);
+        }
         runTick(grid, piece, rank);
 
     }
