@@ -147,7 +147,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // not at the bottom, receive info from the grid below, top here is the part below the grid
     if (row_ind != rp - 1){
         MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
-        for (int i = 0; i < piece; i++) {grid[(piece + 2) * (rp + 1) + 1 + i] = top[i]}
+        for (int i = 0; i < piece; i++) {grid[(piece + 2) * (rp + 1) + 1 + i] = top[i];}
     }
     // not at the top, receive info from the grid above, bottom here is the part above the grid
     if (row_ind != 0){
