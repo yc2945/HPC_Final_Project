@@ -184,12 +184,12 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // if (row_ind != 0){
     //     for (int i=0;i<piece;i++) printf("rank = %d, bottom = %d\n", rank, bottom[i]);
     // }
-    if (col_ind != rp - 1){
-        for (int i=0;i<piece;i++) printf("rank = %d, left = %d\n", rank, left[i]);
-    }
-    // if (col_ind != 0){
-    //     for (int i=0;i<piece;i++) printf("rank = %d, right = %d\n", rank, right[i]);
+    // if (col_ind != rp - 1){
+    //     for (int i=0;i<piece;i++) printf("rank = %d, left = %d\n", rank, left[i]);
     // }
+    if (col_ind != 0){
+        for (int i=0;i<piece;i++) printf("rank = %d, right = %d\n", rank, right[i]);
+    }
 }
 
 // master node gather subcubes
