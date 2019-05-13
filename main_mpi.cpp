@@ -26,25 +26,8 @@ void transform(int* biggrid, int*smallgrid, int piece){
         }
     }
 }
-void runTick(int *grid, int* top, int* bottom, int* left, int* right, int piece, int rank) {
+void runTick(int *grid, int piece, int rank) {
     
-    // if (row_ind != rp - 1){
-    //     MPI_Irecv(top, piece, MPI_INT, rank + rp, rank + rp, comm, &request_in1);
-    // }
-    // // not at the top, receive info from the grid above, bottom here is the part above the grid
-    // if (row_ind != 0){
-    //     MPI_Irecv(bottom, piece, MPI_INT, rank - rp, rank - rp, comm, &request_in2);  
-    // }
-
-    // // not at the right side, receive info from the grid right, left here is the part right of the grid
-    // if (col_ind != rp - 1){
-    //     MPI_Irecv(left, piece, MPI_INT, rank + 1, rank + 1, comm, &request_in3);  
-    // }
-    // // not at the left side, receive info from the grid left, right here is the part left of the grid
-    // if (col_ind != 0){
-    //     MPI_Irecv(right, piece, MPI_INT, rank - 1, rank - 1, comm, &request_in4);  
-    // }   
-
     int *newGrid = (int*) malloc(piece * piece * sizeof(int));
     for (int i = 0; i < piece * piece; i++) {
         int liveCount = 0;
@@ -287,12 +270,12 @@ int main(int argc, char** argv) {
         gather(allgrid, grid, rank, piece, rp, world_size, comm);
         sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
-        for (int j = 0; j < world_size; j++){
-            if (rank == j)
-                printGrid(grid, i, piece, rank);
-            MPI_Barrier(comm);
-        }
-        // runTick(grid, top, bottom, left, right, piece, rank);
+        // for (int j = 0; j < world_size; j++){
+        //     if (rank == j)
+        //         printGrid(grid, i, piece, rank);
+        //     MPI_Barrier(comm);
+        // }
+        runTick(grid, piece, rank);
 
     }
     MPI_Barrier(comm);
