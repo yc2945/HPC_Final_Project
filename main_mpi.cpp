@@ -15,10 +15,12 @@ MPI_Request request_out1, request_in1;
 MPI_Request request_out2, request_in2;
 MPI_Request request_out3, request_in3;
 MPI_Request request_out4, request_in4;
+
 MPI_Request request_out5, request_in5;
 MPI_Request request_out6, request_in6;
 MPI_Request request_out7, request_in7;
 MPI_Request request_out8, request_in8;
+
 // We define 0 as dead, 1 as alive
 
 void transform(int* biggrid, int*smallgrid, int piece){
@@ -116,6 +118,8 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     // e.g. rank = 4,rp = 3, then row_ind = 1, col_ind = 1.
     int row_ind = (int)(rank / rp);
     int col_ind = (int)(rank % rp);
+
+    //send
     int left_top, right_top, left_bottom, right_bottom;
     //send
     // not at the left and the top
