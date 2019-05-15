@@ -335,7 +335,7 @@ int main(int argc, char** argv) {
     if (rank == 0) {
         printf("Data size = %d, Iterations = %d\n", gridSize * gridSize * (int)sizeof(int),
            iterationCount);
-        printf("time elapsed = %f\n", tt);
+        printf("time elapsed = %f\n", MPI_Wtime() - tt);
         // printf("%f GB/s\n", 2 * N * sizeof(double) / 1e9 / tt);
         // printf("%f Gflop/s\n", 2 * N / 1e9 / tt);
     }
