@@ -332,7 +332,7 @@ int main(int argc, char** argv) {
     MPI_Barrier(comm);
 
     // Print off timing information
-    if (world_rank == 0) {
+    if (rank == 0) {
         printf("Data size = %d, Iterations = %d\n", gridSize * gridSize * (int)sizeof(int),
            iterationCount);
         printf("time elapsed = %f\n", tt);
