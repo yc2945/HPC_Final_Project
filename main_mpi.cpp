@@ -6,7 +6,7 @@
 using namespace std;
 
 const int seed = 2019;
-const int iterationCount = 1;
+const int iterationCount = 3;
 const int gridSize = 9;
 
 MPI_Status status;
