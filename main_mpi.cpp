@@ -188,11 +188,12 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_out3, &status);
         MPI_Wait(&request_in4, &status);
     }
-
+    printf("send1");
     if (row_ind != 0 && col_ind != 0){
         MPI_Wait(&request_out5, &status);
         MPI_Wait(&request_in8, &status); 
     }
+    printf("send2");
     if (row_ind != 0 && col_ind != rp - 1){
         MPI_Wait(&request_out6, &status);
         MPI_Wait(&request_in7, &status);
