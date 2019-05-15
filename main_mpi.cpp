@@ -122,33 +122,33 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
     //send
     int left_top, right_top, left_bottom, right_bottom;
     //send
-    // // not at the left and the top
-    // if (row_ind != 0 && col_ind != 0){
-    //     left_top = grid[piece + 2 + 1];
-    //     MPI_Isend(&left_top, 1, MPI_INT, rank - rp - 1, 1, comm, &request_out5); 
-    //     MPI_Irecv(&(grid[(piece + 2) * (rp - 1 + 2) + 1 + piece]), 1, MPI_INT, rank - rp - 1, rank - rp - 1, comm, &request_in8);  
-    // }
+    // not at the left and the top
+    if (row_ind != 0 && col_ind != 0){
+        left_top = grid[piece + 2 + 1];
+        MPI_Isend(&left_top, 1, MPI_INT, rank - rp - 1, rank, comm, &request_out5); 
+        MPI_Irecv(&(grid[(piece + 2) * (rp - 1 + 2) + 1 + piece]), 1, MPI_INT, rank - rp - 1, rank - rp - 1, comm, &request_in8);  
+    }
     // not at the right and the top
     if (row_ind != 0 && col_ind != rp - 1){
-        // right_top = grid[piece + 2 + 1 + piece - 1];
-        // MPI_Isend(&right_top, 1, MPI_INT, rank - rp + 1, 1, comm, &request_out6); 
-        // MPI_Irecv(&(grid[1 + piece]), 1, MPI_INT, rank - rp + 1, rank - rp + 1, comm, &request_in7);  
+        right_top = grid[piece + 2 + 1 + piece - 1];
+        MPI_Isend(&right_top, 1, MPI_INT, rank - rp + 1,rank, comm, &request_out6); 
+        MPI_Irecv(&(grid[1 + piece]), 1, MPI_INT, rank - rp + 1, rank - rp + 1, comm, &request_in7);  
         printf("rank = %d, send to %d", rank, rank - rp + 1);
         printf("rank = %d, receive %d", rank, rank - rp + 1);
     }
     // not at the left and the bottom
     if (row_ind != rp - 1 && col_ind != 0){
-        // left_bottom = grid[(piece + 2) * (rp - 1 + 1) + 1];
-        // MPI_Isend(&left_bottom, 1, MPI_INT, rank + rp - 1, 1, comm, &request_out7); 
-        // MPI_Irecv(&(grid[(piece + 2) * (rp - 1 + 2)]), 1, MPI_INT, rank + rp - 1, rank + rp - 1, comm, &request_in6);  
+        left_bottom = grid[(piece + 2) * (rp - 1 + 1) + 1];
+        MPI_Isend(&left_bottom, 1, MPI_INT, rank + rp - 1, rank, comm, &request_out7); 
+        MPI_Irecv(&(grid[(piece + 2) * (rp - 1 + 2)]), 1, MPI_INT, rank + rp - 1, rank + rp - 1, comm, &request_in6);  
         printf("rank = %d, send to %d\n", rank, rank + rp - 1);
         printf("rank = %d, receive %d\n", rank, rank + rp - 1);    }
-    // // not at the right and the bottom
-    // if (row_ind != rp - 1 && col_ind != rp - 1){
-    //     right_bottom = grid[(piece + 2) * (rp - 1 + 1) + 1 + piece - 1];
-    //     MPI_Isend(&right_bottom, 1, MPI_INT, rank + rp + 1, 1, comm, &request_out8); 
-    //     MPI_Irecv(&(grid[0]), 1, MPI_INT, rank + rp + 1, rank + rp + 1, comm, &request_in5);  
-    // }
+    // not at the right and the bottom
+    if (row_ind != rp - 1 && col_ind != rp - 1){
+        right_bottom = grid[(piece + 2) * (rp - 1 + 1) + 1 + piece - 1];
+        MPI_Isend(&right_bottom, 1, MPI_INT, rank + rp + 1, rank, comm, &request_out8); 
+        MPI_Irecv(&(grid[0]), 1, MPI_INT, rank + rp + 1, rank + rp + 1, comm, &request_in5);  
+    }
 
     // not at the top, receive info from the grid above, bottom here is the part above the grid
     if (row_ind != 0){
