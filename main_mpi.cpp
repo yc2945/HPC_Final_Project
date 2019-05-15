@@ -268,9 +268,9 @@ int main(int argc, char** argv) {
     MPI_Comm_size(comm, &world_size);
 
     int name_len;
-    char processor_name[MPI_MAX_PROCESSOR_NAME];
-    MPI_Get_processor_name(processor_name, &name_len);
-    printf("Rank %d/%d running on %s.\n", rank, world_size, processor_name);
+    // char processor_name[MPI_MAX_PROCESSOR_NAME];
+    // MPI_Get_processor_name(processor_name, &name_len);
+    // printf("Rank %d/%d running on %s.\n", rank, world_size, processor_name);
 
     // calculate the rp of each subcube
     int rp = (int)sqrt(world_size);
@@ -307,6 +307,8 @@ int main(int argc, char** argv) {
         }
     }
 
+    //start the timer
+    double tt = MPI_Wtime();
 
     //update each subcube
     for (int i = 0; i < iterationCount; i++) {
@@ -328,6 +330,19 @@ int main(int argc, char** argv) {
 
   
     MPI_Barrier(comm);
+
+    // Print off timing information
+    if (world_rank == 0) {
+        printf("Data size = %d, Iterations = %d\n", gridSize * gridSize * (int)sizeof(int),
+           iterationCount);
+        printf("time elapsed = %f\n", tt);
+        // printf("%f GB/s\n", 2 * N * sizeof(double) / 1e9 / tt);
+        // printf("%f Gflop/s\n", 2 * N / 1e9 / tt);
+    }
+
+
+
+
     free(allgrid);
     free(grid);
     free(top);
