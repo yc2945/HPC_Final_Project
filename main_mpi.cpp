@@ -186,22 +186,22 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_in4, &status);
     }
 
-   if (row_ind != 0 && col_ind != 0){
+    if (row_ind != 0 && col_ind != 0){
         MPI_Wait(&request_out5, &status);
         MPI_Wait(&request_in5, &status); 
-
+    }
     if (row_ind != 0 && col_ind != rp - 1){
         MPI_Wait(&request_out6, &status);
         MPI_Wait(&request_in6, &status);
-
+    }
     if (row_ind != rp - 1 && col_ind != 0){
         MPI_Wait(&request_out7, &status);
         MPI_Wait(&request_in7, &status); 
-
+    }
     if (row_ind != rp - 1 && col_ind != rp - 1){
         MPI_Wait(&request_out8, &status);
-        MPI_Wait(&request_in8, &status);
-
+        MPI_Wait(&request_in8, &status);    
+    }
 
     if (row_ind != rp - 1){
         for (int i = 0; i < piece; i++) {grid[(piece + 2) * (rp + 1) + 1 + i] = top[i];}
