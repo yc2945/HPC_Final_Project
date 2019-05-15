@@ -128,18 +128,18 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Isend(&left_top, 1, MPI_INT, rank - rp - 1, 1, comm, &request_out5); 
         MPI_Irecv(&(grid[(piece + 2) * (rp - 1 + 2) + 1 + piece]), 1, MPI_INT, rank - rp - 1, rank - rp - 1, comm, &request_in8);  
     }
-    // not at the right and the top
-    if (row_ind != 0 && col_ind != rp - 1){
-        right_top = grid[piece + 2 + 1 + piece - 1];
-        MPI_Isend(&right_top, 1, MPI_INT, rank - rp + 1, 1, comm, &request_out6); 
-        MPI_Irecv(&(grid[1 + piece]), 1, MPI_INT, rank - rp + 1, rank - rp + 1, comm, &request_in7);  
-    }
-    // not at the left and the bottom
-    if (row_ind != rp - 1 && col_ind != 0){
-        left_bottom = grid[(piece + 2) * (rp - 1 + 1) + 1];
-        MPI_Isend(&left_bottom, 1, MPI_INT, rank + rp - 1, 1, comm, &request_out7); 
-        MPI_Irecv(&(grid[(piece + 2) * (rp - 1 + 2)]), 1, MPI_INT, rank + rp - 1, rank + rp - 1, comm, &request_in6);  
-    }
+    // // not at the right and the top
+    // if (row_ind != 0 && col_ind != rp - 1){
+    //     right_top = grid[piece + 2 + 1 + piece - 1];
+    //     MPI_Isend(&right_top, 1, MPI_INT, rank - rp + 1, 1, comm, &request_out6); 
+    //     MPI_Irecv(&(grid[1 + piece]), 1, MPI_INT, rank - rp + 1, rank - rp + 1, comm, &request_in7);  
+    // }
+    // // not at the left and the bottom
+    // if (row_ind != rp - 1 && col_ind != 0){
+    //     left_bottom = grid[(piece + 2) * (rp - 1 + 1) + 1];
+    //     MPI_Isend(&left_bottom, 1, MPI_INT, rank + rp - 1, 1, comm, &request_out7); 
+    //     MPI_Irecv(&(grid[(piece + 2) * (rp - 1 + 2)]), 1, MPI_INT, rank + rp - 1, rank + rp - 1, comm, &request_in6);  
+    // }
     // not at the right and the bottom
     if (row_ind != rp - 1 && col_ind != rp - 1){
         right_bottom = grid[(piece + 2) * (rp - 1 + 1) + 1 + piece - 1];
@@ -188,20 +188,18 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
         MPI_Wait(&request_out3, &status);
         MPI_Wait(&request_in4, &status);
     }
-    printf("send1");
     if (row_ind != 0 && col_ind != 0){
         MPI_Wait(&request_out5, &status);
         MPI_Wait(&request_in8, &status); 
     }
-    printf("send2");
-    if (row_ind != 0 && col_ind != rp - 1){
-        MPI_Wait(&request_out6, &status);
-        MPI_Wait(&request_in7, &status);
-    }
-    if (row_ind != rp - 1 && col_ind != 0){
-        MPI_Wait(&request_out7, &status);
-        MPI_Wait(&request_in6, &status); 
-    }
+    // if (row_ind != 0 && col_ind != rp - 1){
+    //     MPI_Wait(&request_out6, &status);
+    //     MPI_Wait(&request_in7, &status);
+    // }
+    // if (row_ind != rp - 1 && col_ind != 0){
+    //     MPI_Wait(&request_out7, &status);
+    //     MPI_Wait(&request_in6, &status); 
+    // }
     if (row_ind != rp - 1 && col_ind != rp - 1){
         MPI_Wait(&request_out8, &status);
         MPI_Wait(&request_in5, &status);    
