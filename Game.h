@@ -10,6 +10,8 @@
 #define PROJECT_GAME_H
 
 #include <vector>
+#include <iostream>
+
 
 const int seed = 2019;
 //const int iterationCount = 10;

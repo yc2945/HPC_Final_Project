@@ -9,7 +9,7 @@ Game::Game(int gridSize) {
     this->iterationCount = 0;
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
-            this->grid[row * gridSize + col] = rand() % 2;
+            this->grid.push_back(rand() % 2);
         }
     }
 }
@@ -32,15 +32,15 @@ void Game::runTick() {
                         continue;
                     }
 
-                    if (getStatus(neighborRow, neighborCol) == STATUS_ALIVE) liveCount++;
+                    if (getStatus(neighborRow, neighborCol) == 1) liveCount++;
                 }
             }
 
             newGrid[index] = grid[index];
-            if (grid[index] == STATUS_ALIVE && (liveCount < 2 || liveCount > 3)) {
+            if (grid[index] == 1 && (liveCount < 2 || liveCount > 3)) {
                 newGrid[index] = 0;
             }
-            if (grid[index] == STATUS_DEAD && liveCount == 3) {
+            if (grid[index] == 0 && liveCount == 3) {
                 newGrid[index] = 1;
             }
         }
@@ -51,12 +51,12 @@ void Game::runTick() {
 }
 
 void Game::printGame() {
-    std::cout << "Iteration: " << iterationCount << endl;
+    std::cout << "Iteration: " << iterationCount << std::endl;
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
-            std::cout << getStatus(i, j);
+            std::cout << getStatus(i, j) << " ";
         }
-        std::endl;
+        std::cout << std::endl;
     }
 }
 
