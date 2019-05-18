@@ -7,6 +7,9 @@
 Game::Game(int gridSize) {
     this->gridSize = gridSize;
     this->iterationCount = 0;
+}
+
+void Game::initialize() {
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
             this->grid.push_back(rand() % 2);

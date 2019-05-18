@@ -27,6 +27,7 @@ private:
 public:
     Game(int gridSize);
 
+    void initialize();
     void runTick();
     void printGame();
     int getStatus(int row, int col);

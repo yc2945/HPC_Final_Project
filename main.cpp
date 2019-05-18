@@ -64,30 +64,11 @@ void printGrid(int iteration) {
 
 int main() {
     Game *game = new Game(10);
+    game->initialize(); 
     for (int itr = 0; itr < 10; itr++) {
         game->runTick();
         game->printGame();
     }
-
     return 0;
 
-
-//    grid = new int[gridSize * gridSize];
-//
-//    srand(seed);
-//
-//    for (int i = 0; i < gridSize; i++) {
-//        for (int j = 0; j < gridSize; j++) {
-//            grid[i * gridSize + j] = rand() % 2;
-//        }
-//    }
-//
-//
-//    for (int i = 0; i < iterationCount; i++) {
-//        runTick();
-//        printGrid(i);
-//    }
-//
-//    delete[] grid;
-//    return 0;
 }
