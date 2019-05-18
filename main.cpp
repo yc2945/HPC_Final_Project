@@ -1,15 +1,22 @@
 #include <iostream>
 #include <vector>
 
+#include "Game.h"
+
 using namespace std;
 
-const int seed = 2019;
+//const int seed = 2019;
 const int iterationCount = 10;
 const int gridSize = 20;
 
 int *grid;
 
 // We define 0 as dead, 1 as alive
+
+
+int getStatus(int row, int col) {
+    return grid[row * gridSize + col]; 
+}
 
 void runTick() {
     int *newGrid = new int[gridSize * gridSize];
@@ -56,22 +63,31 @@ void printGrid(int iteration) {
 
 
 int main() {
-    grid = new int[gridSize * gridSize];
-
-    srand(seed);
-
-    for (int i = 0; i < gridSize; i++) {
-        for (int j = 0; j < gridSize; j++) {
-            grid[i * gridSize + j] = rand() % 2;
-        }
+    Game *game = new Game(10);
+    for (int itr = 0; itr < 10; itr++) {
+        game->runTick();
+        game->printGame();
     }
 
-
-    for (int i = 0; i < iterationCount; i++) {
-        runTick();
-        printGrid(i);
-    }
-
-    delete[] grid;
     return 0;
+
+
+//    grid = new int[gridSize * gridSize];
+//
+//    srand(seed);
+//
+//    for (int i = 0; i < gridSize; i++) {
+//        for (int j = 0; j < gridSize; j++) {
+//            grid[i * gridSize + j] = rand() % 2;
+//        }
+//    }
+//
+//
+//    for (int i = 0; i < iterationCount; i++) {
+//        runTick();
+//        printGrid(i);
+//    }
+//
+//    delete[] grid;
+//    return 0;
 }
