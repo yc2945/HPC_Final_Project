@@ -310,11 +310,12 @@ int main(int argc, char** argv) {
                 int c2 = rand() % cnum;
                 srand(seed+rank + 102);
                 int c3 = rand() % cnum;
-                val = c1 * 1000 * 1000 + c2 * 1000 + c3
+                val = c1 * 1000 * 1000 + c2 * 1000 + c3;
             }
             grid[i * (piece + 2) + j] = val;
         }
     }
+    
 
     //start the timer
     double tt = MPI_Wtime();
