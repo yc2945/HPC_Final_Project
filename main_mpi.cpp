@@ -69,6 +69,9 @@ void runTick(int *grid, int piece, int rank) {
                 }
 
                 val = grid[ind];
+                if (rank == 8 && i == piece && j ==piece){
+                    printf("liveCount = %d", liveCount);
+                }
                 if (grid[ind] >= 1 && (liveCount < 2 || liveCount > 3)) {
                     val = 0;
                 }
