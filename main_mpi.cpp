@@ -92,7 +92,7 @@ void runTick(int *grid, int piece, int rank) {
                             
                         }
                     }
-                    val = int(float(cr_sum) / 8 * 1000 * 1000 + float(cg_sum) / 8.0 * 1000 + float(cb_sum) / 8.0);
+                    val = int(float(cr_sum) / liveCount * 1000 * 1000 + float(cg_sum) / liveCount * 1000 + float(cb_sum) / liveCount);
                 }
             }
             newGrid[i * (piece + 2) + j] = val;
