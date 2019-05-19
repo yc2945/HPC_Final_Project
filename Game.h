@@ -11,6 +11,8 @@
 
 #include <vector>
 #include <iostream>
+#include <string> 
+#include <fstream>
 
 
 const int seed = 2019;
@@ -30,6 +32,7 @@ public:
     void initialize();
     void runTick();
     void printGame();
+    void storeGrid(); 
     int getStatus(int row, int col);
 
 };
