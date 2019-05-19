@@ -306,6 +306,7 @@ int main(int argc, char** argv) {
             else{
                 srand(seed+rank + 100);
                 int c1 = rand() % cnum;
+                printf("c1 = %d", c1);
                 srand(seed+rank + 101);
                 int c2 = rand() % cnum;
                 srand(seed+rank + 102);
