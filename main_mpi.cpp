@@ -8,6 +8,8 @@ using namespace std;
 const int seed = 2019;
 const int iterationCount = 3;
 const int gridSize = 9;
+const int cnum = 255;
+const int cchannel = 3;
 
 MPI_Status status;
 
@@ -301,8 +303,15 @@ int main(int argc, char** argv) {
         for (int j = 0; j < piece + 2; j++) {
             if (i == 0 || i == piece + 1 || j == 0 || j == piece + 1 )
                 val = 0;
-            else
-                val = rand() % 2;
+            else{
+                srand(seed+rank + 100);
+                int c1 = rand() % cnum;
+                srand(seed+rank + 101);
+                int c2 = rand() % cnum;
+                srand(seed+rank + 102);
+                int c3 = rand() % cnum;
+                val = c1 * 1000 * 1000 + c2 * 1000 + c3
+            }
             grid[i * (piece + 2) + j] = val;
         }
     }
@@ -315,14 +324,14 @@ int main(int argc, char** argv) {
 
 
         gather(allgrid, grid, rank, piece, rp, world_size, comm);
-        sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
-        MPI_Barrier(comm);
-        // for (int j = 0; j < world_size; j++){
-        //     if (rank == j)
-        //         printGrid(grid, i, piece, rank);
-        //     MPI_Barrier(comm);
-        // }
-        runTick(grid, piece, rank);
+        // sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
+        // MPI_Barrier(comm);
+        // // for (int j = 0; j < world_size; j++){
+        // //     if (rank == j)
+        // //         printGrid(grid, i, piece, rank);
+        // //     MPI_Barrier(comm);
+        // // }
+        // runTick(grid, piece, rank);
 
     }
     MPI_Barrier(comm);
