@@ -302,7 +302,7 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
 
 
 int main(int argc, char** argv) {
-
+    printf("Start");
     MPI_Init(&argc, &argv);
     
     int rank;
