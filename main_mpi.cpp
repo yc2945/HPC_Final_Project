@@ -37,7 +37,7 @@ void runTick(int *grid, int piece, int rank) {
     
     int *newGrid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
     int liveCount;
-    int row, col, val, ind, cr, cg, cb, nei_val;
+    int row, col, val, ind, cr, cg, cb, cr_sum, cg_sum, cb_sum, nei_val;
 
     for (int i = 0; i < piece + 2; i++) {
         for (int j = 0; j < piece + 2; j++) {
