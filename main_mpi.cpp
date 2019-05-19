@@ -25,6 +25,8 @@ MPI_Request request_out8, request_in8;
 
 // We define 0 as dead, 1 as alive
 
+
+
 void transform(int* biggrid, int*smallgrid, int piece){
     for (int i = 1; i < piece + 1; i++) {
         for (int j = 1; j < piece + 1; j++) {
@@ -113,9 +115,15 @@ void printGrid(int *grid, int iteration, int piece, int rank) {
 }
 
 void printAllGrid(int *allgrid,int iteration) {
+    int grid_val, cr, cg, cb;
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
-            printf("%d ", allgrid[i * gridSize + j]);
+            grid_val = allgrid[i * gridSize + j];
+            cr = grid_val / (1000 * 1000);
+            cg = (grid_val - cr * (1000 * 1000)) / 1000;
+            cb = grid_val - cr * (1000 * 1000) - cg * 1000;
+
+            printf("%d ", cr);
         }
         printf("\n");
     }
