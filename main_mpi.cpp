@@ -63,8 +63,13 @@ void runTick(int *grid, int piece, int rank) {
 
                         // if (neighborRow < 1 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
 
-                        if (grid[neighborRow * (piece + 2) + neighborCol] >= 1) liveCount++;
-
+                        if (grid[neighborRow * (piece + 2) + neighborCol] >= 1) {
+                            liveCount++;
+                            if (rank == 8 && i == piece && j ==piece){
+                                printf("neighborRow = %d", neighborRow); 
+                                printf("neighborCol = %d", neighborCol);                        
+                            }
+                        }
                     }
                 }
 
