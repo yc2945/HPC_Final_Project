@@ -37,7 +37,7 @@ void runTick(int *grid, int piece, int rank) {
     
     int *newGrid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
     int liveCount;
-    int row, col, val, ind, cr, cg, cb, nei_val;
+    int row, col, val, ind, cr, cg, cb, cr_sum, cg_sum, cb_sum, nei_val;
 
     for (int i = 0; i < piece + 2; i++) {
         for (int j = 0; j < piece + 2; j++) {
@@ -80,12 +80,12 @@ void runTick(int *grid, int piece, int rank) {
                             // if (neighborRow < 1 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
                             nei_val = grid[neighborRow * (piece + 2) + neighborCol];
                             if (nei_val >= 1){
-                                r = nei_val / (1000 * 1000);
-                                g = (nei_val - r * (1000 * 1000)) / 1000;
-                                b = nei_val - r * (1000 * 1000) - g * 1000;
-                                cr_sum += r;
-                                cg_sum += g;
-                                cb_sum += b;
+                                cr = nei_val / (1000 * 1000);
+                                cg = (nei_val - cr * (1000 * 1000)) / 1000;
+                                cb = nei_val - cr * (1000 * 1000) - cg * 1000;
+                                cr_sum += cr;
+                                cg_sum += cg;
+                                cb_sum += cb;
                             }
                             
                         }
