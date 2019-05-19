@@ -37,7 +37,7 @@ void runTick(int *grid, int piece, int rank) {
     
     int *newGrid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
     int liveCount;
-    int row, col, val, ind;
+    int row, col, val, ind, cr, cg, cb, nei_val;
 
     for (int i = 0; i < piece + 2; i++) {
         for (int j = 0; j < piece + 2; j++) {
@@ -49,6 +49,9 @@ void runTick(int *grid, int piece, int rank) {
                 liveCount = 0;
                 row = i;
                 col = j;
+                cr_sum = 0;
+                cg_sum = 0;
+                cb_sum = 0;
 
                 for (int m = -1; m <= 1; m++) {
                     for (int n = -1; n <= 1; n++) {
@@ -58,16 +61,36 @@ void runTick(int *grid, int piece, int rank) {
 
                         // if (neighborRow < 1 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
 
-                        if (grid[neighborRow * (piece + 2) + neighborCol] == 1) liveCount++;
+                        if (grid[neighborRow * (piece + 2) + neighborCol] >= 1) liveCount++;
+
                     }
                 }
 
                 val = grid[ind];
-                if (grid[ind] == 1 && (liveCount < 2 || liveCount > 3)) {
+                if (grid[ind] >= 1 && (liveCount < 2 || liveCount > 3)) {
                     val = 0;
                 }
                 if (grid[ind] == 0 && liveCount == 3) {
-                    val = 1;
+                    for (int m = -1; m <= 1; m++) {
+                        for (int n = -1; n <= 1; n++) {
+                            if (m == 0 && n == 0) continue;
+                            int neighborRow = row + m;
+                            int neighborCol = col + n;
+
+                            // if (neighborRow < 1 || neighborCol >= piece || neighborCol < 0 || neighborCol >= piece) continue;
+                            nei_val = grid[neighborRow * (piece + 2) + neighborCol];
+                            if (nei_val >= 1){
+                                r = nei_val / (1000 * 1000);
+                                g = (nei_val - r * (1000 * 1000)) / 1000;
+                                b = nei_val - r * (1000 * 1000) - g * 1000;
+                                cr_sum += r;
+                                cg_sum += g;
+                                cb_sum += b;
+                            }
+                            
+                        }
+                    }
+                    val = int(float(cr_sum) / 8 * 1000 * 1000 + float(cg_sum) / 8.0 * 1000 + float(cb_sum) / 8.0);
                 }
             }
             newGrid[i * (piece + 2) + j] = val;
@@ -306,12 +329,13 @@ int main(int argc, char** argv) {
             else{
                 srand(seed+rank + 100);
                 int c1 = rand() % cnum;
-                printf("c1 = %d", c1);
                 srand(seed+rank + 101);
                 int c2 = rand() % cnum;
                 srand(seed+rank + 102);
                 int c3 = rand() % cnum;
                 val = c1 * 1000 * 1000 + c2 * 1000 + c3;
+                if (val == 0)
+                    val = 1;
             }
             grid[i * (piece + 2) + j] = val;
         }
