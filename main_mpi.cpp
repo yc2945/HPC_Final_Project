@@ -335,12 +335,13 @@ int main(int argc, char** argv) {
             if (i == 0 || i == piece + 1 || j == 0 || j == piece + 1 )
                 val = 0;
             else{
+                srand(seed+rank);
                 if (rand() % 2 != 0){
                     srand(seed+ 36 * rank + 100);
                     int c1 = rand() % cnum;
-                    srand(seed+36 * rank + 101);
+                    srand(seed+360 * rank + 101);
                     int c2 = rand() % cnum;
-                    srand(seed+36 * rank + 102);
+                    srand(seed+3600 * rank + 102);
                     int c3 = rand() % cnum;
                     val = c1 * 1000 * 1000 + c2 * 1000 + c3;
                     if (val == 0)
