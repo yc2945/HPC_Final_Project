@@ -66,8 +66,9 @@ void runTick(int *grid, int piece, int rank) {
                         if (grid[neighborRow * (piece + 2) + neighborCol] >= 1) {
                             liveCount++;
                             if (rank == 8 && i == piece && j ==piece){
-                                // printf("neighborRow = %d", neighborRow); 
-                                // printf("neighborCol = %d", neighborCol);                        
+                                printf("neighborRow = %d\n", neighborRow); 
+                                printf("neighborCol = %d\n", neighborCol); 
+                                printf("neighborVal = %d\n", grid[neighborRow * (piece + 2) + neighborCol]);               
                             }
                         }
                     }
@@ -130,8 +131,6 @@ void printAllGrid(int *allgrid,int iteration) {
             cr = grid_val / (1000 * 1000);
             cg = (grid_val - cr * (1000 * 1000)) / 1000;
             cb = grid_val - cr * (1000 * 1000) - cg * 1000;
-
-            printf("%d ", cr);
         }
         printf("\n");
     }
@@ -142,7 +141,7 @@ void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
     // e.g. rank = 4,rp = 3, piece = 2, then row = 2, col_start = 2
     int* temp  = (int*) malloc(piece * piece * sizeof(int));
     if (rank == 8){
-        printf("grid[(piece + 2) * (piece + 2) - 1] = %d", grid[(piece + 2) * (piece + 2) - 1]);
+        printf("grid[(piece + 2) * (piece + 2) - 1] = %d\n", grid[(piece + 2) * (piece + 2) - 1]);
 
     }
     transform(grid, temp, piece);
