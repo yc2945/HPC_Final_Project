@@ -361,8 +361,7 @@ int main(int argc, char** argv) {
         }
     }
     
-    // int iterationCount = atoi(argv[1]);
-    int iterationCount = 3;
+    int iterationCount = int(argv[1]);
     //start the timer
     double tt = MPI_Wtime();
 
