@@ -9,6 +9,7 @@ const int seed = 2019;
 const int gridSize = 9;
 const int cnum = 255;
 const int cchannel = 3;
+const int iterationCount = atoi(argv[1]);
 
 MPI_Status status;
 
@@ -362,7 +363,6 @@ int main(int argc, char** argv) {
         }
     }
     
-    int iterationCount = atoi(argv[1])
     //start the timer
     double tt = MPI_Wtime();
 

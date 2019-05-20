@@ -2,7 +2,7 @@ CXX = mpic++
 # or mpicxx
 CXXFLAGS = -std=c++11 -O3 -march=native -fopenmp
 
-TARGETS = $(basename $(main_mpi.cpp))
+TARGETS = $(basename $(wildcard *.cpp))
 
 all : $(TARGETS)
 
