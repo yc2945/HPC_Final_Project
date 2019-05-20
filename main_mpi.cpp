@@ -6,7 +6,6 @@
 using namespace std;
 
 const int seed = 2019;
-const int iterationCount = 3;
 const int gridSize = 9;
 const int cnum = 255;
 const int cchannel = 3;
@@ -303,7 +302,7 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
 
 
 int main(int argc, char** argv) {
-    printf("Start");
+    printf("Start\n");
     MPI_Init(&argc, &argv);
     
     int rank;
@@ -363,7 +362,7 @@ int main(int argc, char** argv) {
         }
     }
     
-
+    int iterationCount = atoi(argv[1])
     //start the timer
     double tt = MPI_Wtime();
 
@@ -371,7 +370,7 @@ int main(int argc, char** argv) {
     for (int i = 0; i < iterationCount; i++) {
 
 
-        gather(allgrid, grid, rank, piece, rp, world_size, comm);
+        //gather(allgrid, grid, rank, piece, rp, world_size, comm);
         sendmargin(grid, top, bottom, left, right, rank, rp, piece, comm);
         MPI_Barrier(comm);
         // for (int j = 0; j < world_size; j++){
@@ -392,7 +391,7 @@ int main(int argc, char** argv) {
     if (rank == 0) {
         printf("Data size = %d, Iterations = %d\n", gridSize * gridSize * (int)sizeof(int),
            iterationCount);
-        printf("time elapsed = %f\n", MPI_Wtime() - tt);
+        printf("time elapsed per iteration = %f\n", (MPI_Wtime() - tt)/iterationCount);
         // printf("%f GB/s\n", 2 * N * sizeof(double) / 1e9 / tt);
         // printf("%f Gflop/s\n", 2 * N / 1e9 / tt);
     }
