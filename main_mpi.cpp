@@ -284,13 +284,13 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
         MPI_Send(grid, (piece + 2) *(piece + 2), MPI_INT, 0, rank, comm);
     }
     else{
-        fillcube(grid, allgrid, rank, rp, piece);
+        fillcube(grid, allgrid, rank, rp, piece, gridSize);
         int *other_grid = (int*) malloc((piece + 2) * (piece + 2) * sizeof(int));
         for (int j = 1; j < world_size; j++){
             
             MPI_Recv(other_grid, (piece + 2) * (piece + 2), MPI_INT, j, j, comm, &status);
 
-            fillcube(other_grid, allgrid, j, rp, piece);
+            fillcube(other_grid, allgrid, j, rp, piece, gridSize);
         }        
         printAllGrid(allgrid, gridSize);
         free(other_grid);
