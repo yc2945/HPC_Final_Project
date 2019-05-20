@@ -51,6 +51,9 @@ void Game::runTick() {
 
     grid = newGrid;
     iterationCount++;
+    if (iterationCount == 5) {
+        storeGrid(); 
+    }
 }
 
 void Game::printGame() {
@@ -65,4 +68,16 @@ void Game::printGame() {
 
 int Game::getStatus(int row, int col) {
     return grid[row * gridSize + col];
+}
+
+void Game::storeGrid() {
+    std::string fileName = "serial_" + std::to_string(gridSize) + "_" + std::to_string(iterationCount) + ".txt"; 
+    std::ofstream outfile(fileName.c_str());
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            outfile << i << " " << j << " " << getStatus(i, j) << std::endl; 
+        }
+    }
+    outfile.close(); 
+    exit(0); 
 }
