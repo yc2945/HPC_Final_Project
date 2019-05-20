@@ -6,7 +6,6 @@
 using namespace std;
 
 const int seed = 2019;
-const int gridSize = 9;
 const int cnum = 255;
 const int cchannel = 3;
 
@@ -122,7 +121,7 @@ void printGrid(int *grid, int iteration, int piece, int rank) {
     printf("\n");
 }
 
-void printAllGrid(int *allgrid) {
+void printAllGrid(int *allgrid, int gridSize) {
     int grid_val, cr, cg, cb;
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
@@ -137,7 +136,7 @@ void printAllGrid(int *allgrid) {
     printf("\n");
 }
 
-void fillcube(int *grid, int *allgrid, int rank, int rp, int piece){
+void fillcube(int *grid, int *allgrid, int rank, int rp, int piece, int gridSize){
     // e.g. rank = 4,rp = 3, piece = 2, then row = 2, col_start = 2
     int* temp  = (int*) malloc(piece * piece * sizeof(int));
     if (rank == 8){
@@ -280,7 +279,7 @@ void sendmargin(int *grid, int* top, int* bottom, int* left, int* right, int ran
 // master node gather subcubes
 
 
-void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size, MPI_Comm comm){
+void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size, int gridSize, MPI_Comm comm){
     if (rank != 0) {
         MPI_Send(grid, (piece + 2) *(piece + 2), MPI_INT, 0, rank, comm);
     }
@@ -293,7 +292,7 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
 
             fillcube(other_grid, allgrid, j, rp, piece);
         }        
-        printAllGrid(allgrid);
+        printAllGrid(allgrid, gridSize);
         free(other_grid);
 
     }
@@ -309,6 +308,10 @@ int main(int argc, char** argv) {
     MPI_Comm_rank(comm, &rank);
     int world_size;
     MPI_Comm_size(comm, &world_size);
+
+    int iterationCount = atoi(argv[1]);
+    int gridSize = atoi(argv[2]);
+
 
     int name_len;
     // char processor_name[MPI_MAX_PROCESSOR_NAME];
@@ -361,7 +364,7 @@ int main(int argc, char** argv) {
         }
     }
     
-    int iterationCount = atoi(argv[1]);
+
     //start the timer
     double tt = MPI_Wtime();
 
@@ -381,7 +384,7 @@ int main(int argc, char** argv) {
 
     }
     MPI_Barrier(comm);
-    gather(allgrid, grid, rank, piece, rp, world_size, comm);
+    gather(allgrid, grid, rank, piece, rp, world_size, gridSize, comm);
 
   
     MPI_Barrier(comm);
