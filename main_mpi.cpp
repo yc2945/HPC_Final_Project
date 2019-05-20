@@ -131,7 +131,7 @@ void printAllGrid(int *allgrid,int iteration) {
             cr = grid_val / (1000 * 1000);
             cg = (grid_val - cr * (1000 * 1000)) / 1000;
             cb = grid_val - cr * (1000 * 1000) - cg * 1000;
-            printf("%3d ");
+            printf("%3d ", cr);
         }
         printf("\n");
     }
