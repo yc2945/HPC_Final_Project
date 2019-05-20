@@ -9,7 +9,6 @@ const int seed = 2019;
 const int gridSize = 9;
 const int cnum = 255;
 const int cchannel = 3;
-const int iterationCount = atoi(argv[1]);
 
 MPI_Status status;
 
@@ -123,7 +122,7 @@ void printGrid(int *grid, int iteration, int piece, int rank) {
     printf("\n");
 }
 
-void printAllGrid(int *allgrid,int iteration) {
+void printAllGrid(int *allgrid) {
     int grid_val, cr, cg, cb;
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
@@ -294,7 +293,7 @@ void gather(int *allgrid, int *grid, int rank, int piece, int rp, int world_size
 
             fillcube(other_grid, allgrid, j, rp, piece);
         }        
-        printAllGrid(allgrid, iterationCount);
+        printAllGrid(allgrid);
         free(other_grid);
 
     }
@@ -363,6 +362,7 @@ int main(int argc, char** argv) {
         }
     }
     
+    int iterationCount = atoi(argv[1])
     //start the timer
     double tt = MPI_Wtime();
 
