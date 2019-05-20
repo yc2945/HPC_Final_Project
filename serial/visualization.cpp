@@ -7,16 +7,12 @@
 #include "Game.h"
 
 #define INITIAL_FPS 2;
-#define ALIVE_CELL_COLOR glColor3f(0.0f, 0.0f, 0.0f);
-#define DEAD_CELL_COLOR glColor3f(1.0f, 1.0f, 1.0f);
-#define ROUND_ZERO(a) ((a) - 1 < 0 ? 0 : (a) - 1)
-#define ROUND_MAX(a, max) ((a) + 1 > (max) ? (max) : (a) + 1)
 
 Game *game;
 
 const unsigned int WIDTH = 800;
 const unsigned int HEIGHT = 800;
-const unsigned int SIZE = 100;
+const unsigned int SIZE = 500;
 const unsigned int ROWS = SIZE;
 const unsigned int COLUMNS = SIZE;
 const float CELL_WIDTH = (float) WIDTH / (float) ROWS;
@@ -41,10 +37,12 @@ void renderFunction(void) {
 
     for (unsigned int i = 0; i < ROWS; i++) {
         for (unsigned int j = 0; j < COLUMNS; j++) {
-            if (game->getStatus(i, j) == 1)
-                ALIVE_CELL_COLOR
-            else
-                DEAD_CELL_COLOR
+            int colors = game->getEncodedColor(i, j); 
+            int cr, cg, cb; 
+            cr = colors / (1000 * 1000);
+            cg = (colors - cr * (1000 * 1000)) / 1000;
+            cb = colors - cr * (1000 * 1000) - cg * 1000;
+            glColor3f((float) cr / 255, (float) cg / 255, (float) cb / 255); 
 
             glRectf(
                     (CELL_WIDTH * j) / WIDTH,
@@ -61,6 +59,7 @@ void renderFunction(void) {
     }
     glutSwapBuffers();
 }
+
 
 void timer(int) {
     glutPostRedisplay();

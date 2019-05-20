@@ -13,11 +13,9 @@
 #include <iostream>
 #include <string> 
 #include <fstream>
-
+#include <math.h>
 
 const int seed = 2019;
-//const int iterationCount = 10;
-//const int gridSize = 20;
 
 
 class Game {
@@ -33,11 +31,9 @@ public:
     void runTick();
     void printGame();
     void storeGrid(); 
-    int getStatus(int row, int col);
-
+    int getEncodedColor(int row, int col);
+    std::vector<int> decodeColor(int color); 
+    int encodeColor(int c1, int c2, int c3); 
 };
-
-
-
 
 #endif //PROJECT_GAME_H
